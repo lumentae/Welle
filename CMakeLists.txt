@@ -2,5 +2,7 @@ cmake_minimum_required(VERSION 4.2)
 
 project(Welle)
 
-add_subdirectory(opensubsoniclib)
+set(CMAKE_CXX_STANDARD 26)
+
+add_subdirectory(medialib)
 add_subdirectory(welle)
