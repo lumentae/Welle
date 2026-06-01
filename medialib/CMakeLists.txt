@@ -1,8 +1,8 @@
 add_subdirectory(external)
 
 add_library(medialib SHARED
-        src/client/SubsonicClient.cpp
-        include/client/SubsonicClient.h
+        src/client/OpenSubsonicClient.cpp
+        include/client/OpenSubsonicClient.h
         include/client/IClient.h
 )
 
