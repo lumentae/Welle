@@ -1,7 +1,7 @@
 FetchContent_Declare(
         quickdigest5
         GIT_REPOSITORY https://github.com/nthnn/QuickDigest5
-        GIT_TAG v1.0
+        GIT_TAG main
         SOURCE_DIR ${CMAKE_CURRENT_SOURCE_DIR}/quickdigest5
 )
 FetchContent_MakeAvailable(quickdigest5)

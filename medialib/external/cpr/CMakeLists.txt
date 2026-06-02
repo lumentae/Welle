@@ -1,3 +1,4 @@
+set(CURL_LIBCURL_VERSIONED_SYMBOLS ON CACHE BOOL "" FORCE)
 FetchContent_Declare(
         cpr
         GIT_REPOSITORY https://github.com/libcpr/cpr.git

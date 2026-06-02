@@ -1,13 +1,13 @@
-#include <QApplication>
-#include <QPushButton>
+#include <QGuiApplication>
+#include <QQmlApplicationEngine>
 
-#include "../../medialib/include/client/OpenSubsonicClient.h"
+#include "client/OpenSubsonicClient.h"
 
 int main(int argc, char* argv[]) {
-    //QApplication a(argc, argv);
-    //QPushButton button("Hello world!", nullptr);
-    //button.show();
-    //return QApplication::exec();
+    QGuiApplication app(argc, argv);
+    QQmlApplicationEngine engine;
+    engine.loadFromModule("welle", "Main");
+
     welle::medialib::OpenSubsonicClient client(argv[1], argv[2], argv[3]);
     client.ping();
     client.getSongs({
@@ -15,4 +15,6 @@ int main(int argc, char* argv[]) {
         .albumCount = 0,
         .songCount = 1,
     });
+
+    return QGuiApplication::exec();
 }

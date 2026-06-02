@@ -1,10 +1,12 @@
 add_subdirectory(external)
 
-add_library(medialib SHARED
+add_library(medialib STATIC
         src/client/OpenSubsonicClient.cpp
         include/client/OpenSubsonicClient.h
         include/client/IClient.h
 )
+
+
 
 target_link_libraries(medialib PUBLIC
         cpr::cpr
