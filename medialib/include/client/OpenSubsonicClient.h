@@ -1,8 +1,10 @@
 #pragma once
 
+#include <nlohmann/json_fwd.hpp>
+
 #include "IClient.h"
 
-namespace welle::medialib {
+namespace welle::medialib::client {
     struct OpenSubsonicSearchParameters {
         std::string query = "\"\"";
         uint32_t artistCount = 20;
@@ -26,12 +28,13 @@ namespace welle::medialib {
 
         void ping() override;
 
-        void getSongs(OpenSubsonicSearchParameters searchParameters = {}) override;
+        std::vector<types::Song> getSongs(OpenSubsonicSearchParameters searchParameters = {}) override;
         void getArtists() override;
         void getAlbums() override;
 
     private:
         static std::string generateSalt(int length);
+        nlohmann::json search3(OpenSubsonicSearchParameters searchParameters);
 
         std::string m_ServerUrl;
         std::string m_Password;

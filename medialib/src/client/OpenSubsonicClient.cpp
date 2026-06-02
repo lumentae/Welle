@@ -6,7 +6,7 @@
 #include "cpr/cpr.h"
 #include "nlohmann/json.hpp"
 
-namespace welle::medialib {
+namespace welle::medialib::client {
     std::string OpenSubsonicClient::generateSalt(const int length = 6) {
         static const std::string chars = "abcdefghijklmnopqrstuvwxyz0123456789";
         std::random_device rd;
@@ -19,6 +19,23 @@ namespace welle::medialib {
             salt += chars[dist(gen)];
 
         return salt;
+    }
+
+    nlohmann::json OpenSubsonicClient::search3(OpenSubsonicSearchParameters searchParameters) {
+        if (searchParameters.query.empty())
+            searchParameters.query = "\"\"";
+
+        const nlohmann::json response = nlohmann::json::parse(performRequest("search3", {
+            {"query", searchParameters.query},
+            {"artistCount", std::to_string(searchParameters.artistCount)},
+            {"artistOffset", std::to_string(searchParameters.artistOffset)},
+            {"albumCount", std::to_string(searchParameters.albumCount)},
+            {"albumOffset", std::to_string(searchParameters.albumOffset)},
+            {"songCount", std::to_string(searchParameters.songCount)},
+            {"songOffset", std::to_string(searchParameters.songOffset)},
+        }));
+
+        return response;
     }
 
     std::string OpenSubsonicClient::performRequest(const std::string endpoint, const std::vector<cpr::Parameter> parameters = {}) {
@@ -48,21 +65,10 @@ namespace welle::medialib {
         std::cout << response.dump(4) << std::endl;
     }
 
-    void OpenSubsonicClient::getSongs(OpenSubsonicSearchParameters searchParameters) {
-        if (searchParameters.query.empty())
-            searchParameters.query = "\"\"";
+    std::vector<types::Song> OpenSubsonicClient::getSongs(const OpenSubsonicSearchParameters searchParameters) {
+        const nlohmann::json response = search3(searchParameters);
 
-        const nlohmann::json response = nlohmann::json::parse(performRequest("search3", {
-            {"query", searchParameters.query},
-            {"artistCount", std::to_string(searchParameters.artistCount)},
-            {"artistOffset", std::to_string(searchParameters.artistOffset)},
-            {"albumCount", std::to_string(searchParameters.albumCount)},
-            {"albumOffset", std::to_string(searchParameters.albumOffset)},
-            {"songCount", std::to_string(searchParameters.songCount)},
-            {"songOffset", std::to_string(searchParameters.songOffset)},
-        }));
-
-        std::cout << response.dump(4) << std::endl;
+        return response["subsonic-response"]["searchResult3"]["song"].get<std::vector<types::Song>>();
     }
 
     void OpenSubsonicClient::getArtists() {
