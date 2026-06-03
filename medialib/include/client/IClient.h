@@ -4,6 +4,7 @@
 #include <vector>
 
 #include "types/Song.h"
+#include "types/Album.h"
 
 namespace cpr {
     struct Parameter;
@@ -20,7 +21,7 @@ namespace welle::medialib::client {
         virtual void ping() = 0;
 
         virtual std::vector<types::Song> getSongs(TSearchParameters searchParameters = {}) = 0;
-        virtual void getArtists() = 0;
-        virtual void getAlbums() = 0;
+        virtual std::vector<types::Artist> getArtists(TSearchParameters searchParameters = {}) = 0;
+        virtual std::vector<types::Album> getAlbums(TSearchParameters searchParameters = {}) = 0;
     };
 }

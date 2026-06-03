@@ -5,6 +5,8 @@ add_library(medialib STATIC
         include/client/OpenSubsonicClient.h
         include/client/IClient.h
         include/types/Song.h
+        include/types/Artist.h
+        include/types/Album.h
 )
 
 target_link_libraries(medialib PUBLIC

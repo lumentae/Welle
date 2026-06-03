@@ -1,7 +1,6 @@
+#include <iostream>
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
-#include <QAbstractListModel>
-#include <QAbstractItemModel>
 #include <qqmlcontext.h>
 
 #include "client/OpenSubsonicClient.h"
@@ -20,8 +19,16 @@ int main(int argc, char* argv[]) {
 
     medialib::client::OpenSubsonicClient client(argv[1], argv[2], argv[3]);
     client.ping();
+    const auto albums = client.search3({
+        .artistCount = 1,
+        .albumCount = 1,
+        .songCount = 0
+    });
+
+    std::cout << albums.dump(4) << std::endl;
+
     const auto songs = client.getSongs({
-        .songCount = 20,
+        .songCount = 100,
         .songOffset = 20
     });
 
