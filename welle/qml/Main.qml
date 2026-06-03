@@ -6,10 +6,22 @@ import "./components"
 ApplicationWindow {
     id: root
     visible: true
-    width: 400
-    height: 800
+    width: 800
+    height: 600
     title: "Welle"
     color: "#0f0f0f"
 
-    Sidebar {}
+    RowLayout {
+        anchors.fill: parent
+        spacing: 0
+
+        Sidebar {
+            Layout.preferredWidth: 200
+            Layout.fillHeight: true
+        }
+        Content {
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+        }
+    }
 }

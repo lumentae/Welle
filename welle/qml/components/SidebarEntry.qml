@@ -18,21 +18,25 @@ Item {
 
         Behavior on color { ColorAnimation { duration: 100; }}
 
-        Row {
-            spacing: 16;
-            anchors.centerIn: parent;
+        RowLayout {
+            Layout.alignment: Qt.AlignVCenter | Qt.AlignLeft;
+            anchors.fill: parent;
 
-            Rectangle {
-                width: 24;
-                height: 24;
-                color: "white";
-            }
+            Row {
+                Layout.leftMargin: 16;
+                spacing: 16;
 
-            Text {
-                height: 24;
-                text: textContent;
-                color: active ? "#ff0000" : textColor ? textColor : "white";
-                verticalAlignment: Text.AlignVCenter;
+                Rectangle {
+                    width: 24;
+                    height: 24;
+                    color: "white";
+                }
+                Text {
+                    height: 24;
+                    text: textContent;
+                    color: active ? "#ff0000" : textColor ? textColor : "white";
+                    verticalAlignment: Text.AlignVCenter;
+                }
             }
         }
     }
