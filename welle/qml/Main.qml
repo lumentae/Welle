@@ -9,8 +9,7 @@ ApplicationWindow {
     width: 400
     height: 800
     title: "Welle"
-
     color: "#0f0f0f"
 
-    SongList {}
+    Sidebar {}
 }

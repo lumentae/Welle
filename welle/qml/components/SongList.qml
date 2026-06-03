@@ -24,7 +24,7 @@ ListView {
             Text {
                 text: artist
                 color: "#666"
-                font.pixelSize: 13
+                font.pixelSize: 15
                 verticalAlignment: Text.AlignVCenter
             }
         }

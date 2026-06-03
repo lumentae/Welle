@@ -25,8 +25,6 @@ int main(int argc, char* argv[]) {
         .songCount = 0
     });
 
-    std::cout << albums.dump(4) << std::endl;
-
     const auto songs = client.getSongs({
         .songCount = 100,
         .songOffset = 20
