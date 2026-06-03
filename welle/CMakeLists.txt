@@ -14,6 +14,7 @@ qt_add_qml_module(Welle
         VERSION 1.0
         QML_FILES
             qml/Main.qml
+            qml/components/SongList.qml
         SOURCES
             src/model/SongModel.cpp
             include/model/SongModel.h
