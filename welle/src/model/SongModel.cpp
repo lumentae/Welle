@@ -17,12 +17,12 @@ namespace welle::model {
             case TitleRole: return QString::fromStdString(song.title);
             case ArtistRole: return QString::fromStdString(song.artist);
             case AlbumRole: return QString::fromStdString(song.album);
-            case AlbumIdRole: return QString::fromStdString(song.album_id);
+            case AlbumIdRole: return QString::fromStdString(song.albumId);
             case DurationRole: return static_cast<qlonglong>(song.duration);
-            case CoverArtRole: return QString::fromStdString(song.cover_art);
+            case CoverArtRole: return QString::fromStdString(song.coverArt);
             case PathRole: return QString::fromStdString(song.path);
             case SuffixRole: return QString::fromStdString(song.suffix);
-            case PlayCountRole: return static_cast<qlonglong>(song.play_count);
+            case PlayCountRole: return static_cast<qlonglong>(song.playCount);
             default: return {};
         }
     }
