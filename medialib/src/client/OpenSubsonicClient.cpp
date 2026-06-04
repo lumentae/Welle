@@ -67,8 +67,12 @@ namespace welle::medialib::client {
 
     std::vector<types::Song> OpenSubsonicClient::getSongs(const OpenSubsonicSearchParameters searchParameters) {
         const nlohmann::json response = search3(searchParameters);
+        const auto songs = response["subsonic-response"]["searchResult3"]["song"].get<std::vector<types::Song>>();
+        for (auto& song : songs) {
+            downloadCoverArt(song);
+        }
 
-        return response["subsonic-response"]["searchResult3"]["song"].get<std::vector<types::Song>>();
+        return songs;
     }
 
     std::vector<types::Artist> OpenSubsonicClient::getArtists(const OpenSubsonicSearchParameters searchParameters) {
@@ -81,5 +85,21 @@ namespace welle::medialib::client {
         const nlohmann::json response = search3(searchParameters);
 
         return response["subsonic-response"]["searchResult3"]["album"].get<std::vector<types::Album>>();
+    }
+
+    void OpenSubsonicClient::downloadCoverArt(const types::Song &song) {
+        // TODO: submit this to background thread
+        if (!std::filesystem::exists({"cache"}))
+            std::filesystem::create_directory({"cache"});
+
+        const auto cachePath = std::filesystem::path("cache/" + song.coverArt);
+        if (std::filesystem::exists(cachePath))
+            return;
+
+        const auto response = performRequest("getCoverArt.view",
+            {
+                {"id", song.coverArt}
+            });
+        std::ofstream(cachePath, std::ios::binary) << response;
     }
 }

@@ -23,5 +23,7 @@ namespace welle::medialib::client {
         virtual std::vector<types::Song> getSongs(TSearchParameters searchParameters = {}) = 0;
         virtual std::vector<types::Artist> getArtists(TSearchParameters searchParameters = {}) = 0;
         virtual std::vector<types::Album> getAlbums(TSearchParameters searchParameters = {}) = 0;
+
+        virtual void downloadCoverArt(const types::Song &song) = 0;
     };
 }

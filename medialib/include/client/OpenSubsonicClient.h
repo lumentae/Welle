@@ -32,10 +32,11 @@ namespace welle::medialib::client {
         std::vector<types::Artist> getArtists(OpenSubsonicSearchParameters searchParameters = {}) override;
         std::vector<types::Album> getAlbums(OpenSubsonicSearchParameters searchParameters = {}) override;
 
-        nlohmann::json search3(OpenSubsonicSearchParameters searchParameters);
+        void downloadCoverArt(const types::Song &song) override;
 
     private:
         static std::string generateSalt(int length);
+        nlohmann::json search3(OpenSubsonicSearchParameters searchParameters);
 
         std::string m_ServerUrl;
         std::string m_Password;

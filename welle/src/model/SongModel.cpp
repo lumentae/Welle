@@ -1,4 +1,6 @@
 #include <model/SongModel.h>
+#include <QUrl>
+#include <QDir>
 
 namespace welle::model {
     SongModel::SongModel(QObject *parent) : QAbstractListModel(parent) {}
@@ -20,7 +22,10 @@ namespace welle::model {
             case AlbumRole: return QString::fromStdString(song.album);
             case AlbumIdRole: return QString::fromStdString(song.albumId);
             case DurationRole: return static_cast<qlonglong>(song.duration);
-            case CoverArtRole: return QString::fromStdString(song.coverArt);
+            case CoverArtRole: {
+                QString path = QDir::current().absoluteFilePath("cache/" + QString::fromStdString(song.coverArt));
+                return QUrl::fromLocalFile(path).toString();
+            }
             case PathRole: return QString::fromStdString(song.path);
             case SuffixRole: return QString::fromStdString(song.suffix);
             case PlayCountRole: return static_cast<qlonglong>(song.playCount);

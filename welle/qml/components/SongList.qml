@@ -18,6 +18,11 @@ ListView {
             font.pixelSize: 13
             Layout.preferredWidth: 24
         }
+        Image {
+            source: coverArt
+            sourceSize.width: 56
+            sourceSize.height: 56
+        }
         Column {
             Layout.fillWidth: true
             Text {

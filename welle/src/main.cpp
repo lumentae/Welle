@@ -19,15 +19,9 @@ int main(int argc, char* argv[]) {
 
     medialib::client::OpenSubsonicClient client(argv[1], argv[2], argv[3]);
     client.ping();
-    const auto albums = client.search3({
-        .artistCount = 1,
-        .albumCount = 1,
-        .songCount = 0
-    });
-
     const auto songs = client.getSongs({
         .songCount = 100,
-        .songOffset = 20
+        .songOffset = 121
     });
 
     QList<medialib::types::Song> myList;
