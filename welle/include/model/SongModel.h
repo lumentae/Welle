@@ -33,6 +33,7 @@ namespace welle::model {
         QHash<int, QByteArray> roleNames() const override;
 
         Q_INVOKABLE void setSongs(const QList<medialib::types::Song>& songs);
+        Q_INVOKABLE void play(int index) const;
 
     private:
         QList<medialib::types::Song> m_Songs;

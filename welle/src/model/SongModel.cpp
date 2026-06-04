@@ -1,6 +1,7 @@
 #include <model/SongModel.h>
 #include <QUrl>
 #include <QDir>
+#include <QDebug>
 
 namespace welle::model {
     SongModel::SongModel(QObject *parent) : QAbstractListModel(parent) {}
@@ -53,5 +54,13 @@ namespace welle::model {
         beginResetModel();
         m_Songs = songs;
         endResetModel();
+    }
+
+    void SongModel::play(const int index) const {
+        if (index < 1 || index > m_Songs.size())
+            return;
+
+        const auto song = m_Songs.at(index - 1);
+        qDebug() << "Playing song:" << QString::fromStdString(song.title);
     }
 }

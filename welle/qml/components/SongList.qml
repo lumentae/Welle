@@ -6,50 +6,68 @@ ListView {
     anchors.fill: parent
     model: songModel
 
-    delegate: RowLayout {
+    delegate: Rectangle {
         width: ListView.view.width
         height: 56
-        spacing: 12
+        color: mouseArea.containsMouse ? "#333" : "#0F0F0F"
 
-        Text {
-            Layout.leftMargin: 16
-            text: songIndex
-            color: "#666"
-            font.pixelSize: 13
-            Layout.preferredWidth: 24
-        }
-        Image {
-            source: coverArt
-            sourceSize.width: 56
-            sourceSize.height: 56
-        }
-        Column {
-            Layout.fillWidth: true
+        Behavior on color { ColorAnimation { duration: 50 }}
+
+        RowLayout {
+            anchors.fill: parent
+            width: parent.width
+            height: 56
+            spacing: 12
+
             Text {
-                text: title
-                color: "#e0e0e0"
-                font.pixelSize: 15
+                Layout.leftMargin: 16
+                text: songIndex
+                color: "#666"
+                font.pixelSize: 13
+                Layout.preferredWidth: 24
+            }
+            Image {
+                source: coverArt
+                sourceSize.width: 56
+                sourceSize.height: 56
+            }
+            Column {
+                Layout.fillWidth: true
+                Text {
+                    text: title
+                    color: "#E0E0E0"
+                    font.pixelSize: 15
+                }
+                Text {
+                    text: artist
+                    color: "#666"
+                    font.pixelSize: 13
+                }
             }
             Text {
-                text: artist
+                text: album
+                color: "#666"
+                font.pixelSize: 13
+            }
+            Text {
+                Layout.rightMargin: 16
+                text: {
+                    const m = Math.floor(duration / 60);
+                    const s = duration % 60;
+                    return m + ":" + (s < 10 ? "0" + s : s)
+                }
                 color: "#666"
                 font.pixelSize: 13
             }
         }
-        Text {
-            text: album
-            color: "#666"
-            font.pixelSize: 13
-        }
-        Text {
-            Layout.rightMargin: 16
-            text: {
-                var m = Math.floor(duration / 60)
-                var s = duration % 60
-                return m + ":" + (s < 10 ? "0" + s : s)
+
+        MouseArea {
+            id: mouseArea
+            anchors.fill: parent
+            hoverEnabled: true
+            onClicked: {
+                songModel.play(songIndex)
             }
-            color: "#666"
-            font.pixelSize: 13
         }
     }
 }
