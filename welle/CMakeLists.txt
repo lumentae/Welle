@@ -18,7 +18,7 @@ qt_add_qml_module(Welle
             qml/components/Sidebar.qml
             qml/components/SidebarEntry.qml
             qml/components/Content.qml
-            qml/pages/SongList.qml
+        qml/pages/Songs.qml
         SOURCES
             src/model/SongModel.cpp
             include/model/SongModel.h

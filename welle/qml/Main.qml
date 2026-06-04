@@ -20,6 +20,7 @@ ApplicationWindow {
             Layout.fillHeight: true
         }
         Content {
+            id: mainContent
             Layout.fillWidth: true
             Layout.fillHeight: true
         }

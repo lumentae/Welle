@@ -8,6 +8,8 @@ Rectangle {
     height: parent.height;
     color: "#050505";
 
+    property var selectedEntry;
+
     Column {
         id: sidebarEntries;
         anchors.top: parent.top;
@@ -16,16 +18,36 @@ Rectangle {
         topPadding: 20;
 
         SidebarEntry {
+            textContent: "Home";
+            active: selectedEntry === textContent;
+            onClicked: () => {
+                sidebar.selectedEntry = textContent;
+                mainContent.loader.setSource("qrc:/qt/qml/welle/qml/pages/Home.qml");
+            }
+        }
+        SidebarEntry {
             textContent: "Songs";
-            active: true;
+            active: selectedEntry === textContent;
+            onClicked: () => {
+                sidebar.selectedEntry = textContent;
+                mainContent.loader.setSource("qrc:/qt/qml/welle/qml/pages/Songs.qml");
+            }
         }
         SidebarEntry {
             textContent: "Albums";
-            active: false;
+            active: selectedEntry === textContent;
+            onClicked: () => {
+                sidebar.selectedEntry = textContent;
+                mainContent.loader.setSource("qrc:/qt/qml/welle/qml/pages/Albums.qml");
+            }
         }
         SidebarEntry {
             textContent: "Artists";
-            active: false;
+            active: selectedEntry === textContent;
+            onClicked: () => {
+                sidebar.selectedEntry = textContent;
+                mainContent.loader.setSource("qrc:/qt/qml/welle/qml/pages/Artists.qml");
+            }
         }
     }
 }

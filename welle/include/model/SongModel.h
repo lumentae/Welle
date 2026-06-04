@@ -14,6 +14,7 @@ namespace welle::model {
     public:
         enum Roles {
             IdRole = Qt::UserRole + 1,
+            IndexRole,
             TitleRole,
             ArtistRole,
             AlbumRole,

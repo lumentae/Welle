@@ -9,6 +9,7 @@ Item {
     property string textContent: "";
     property string textColor: "white";
     property bool active: false;
+    signal clicked;
 
     Rectangle {
         anchors.centerIn: parent;
@@ -36,6 +37,8 @@ Item {
                     text: textContent;
                     color: active ? "#ff0000" : textColor ? textColor : "white";
                     verticalAlignment: Text.AlignVCenter;
+
+                    Behavior on color { ColorAnimation { duration: 100; }}
                 }
             }
         }
@@ -45,5 +48,8 @@ Item {
         id: mouseArea
         anchors.fill: parent
         hoverEnabled: true
+        onClicked: () => {
+            parent.clicked();
+        }
     }
 }

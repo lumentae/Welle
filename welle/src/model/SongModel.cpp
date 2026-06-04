@@ -14,6 +14,7 @@ namespace welle::model {
         const auto song = m_Songs.at(index.row());
         switch (role) {
             case IdRole: return QString::fromStdString(song.id);
+            case IndexRole: return index.row() + 1;
             case TitleRole: return QString::fromStdString(song.title);
             case ArtistRole: return QString::fromStdString(song.artist);
             case AlbumRole: return QString::fromStdString(song.album);
@@ -30,6 +31,7 @@ namespace welle::model {
     QHash<int, QByteArray> SongModel::roleNames() const {
         return {
             { IdRole,        "songId"    },
+            { IndexRole,     "songIndex" },
             { TitleRole,     "title"     },
             { ArtistRole,    "artist"    },
             { AlbumRole,     "album"     },
