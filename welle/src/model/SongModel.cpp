@@ -1,7 +1,7 @@
 #include <model/SongModel.h>
 #include <QUrl>
 #include <QDir>
-#include <QDebug>
+#include <QtConcurrent>
 
 namespace welle::model {
     SongModel::SongModel(QObject *parent) : QAbstractListModel(parent) {}
@@ -14,7 +14,7 @@ namespace welle::model {
         if (!index.isValid() || index.row() >= m_Songs.size())
             return {};
 
-        const auto song = m_Songs.at(index.row());
+        const auto& song = m_Songs.at(index.row());
         switch (role) {
             case IdRole: return QString::fromStdString(song.id);
             case IndexRole: return index.row() + 1;
@@ -24,7 +24,7 @@ namespace welle::model {
             case AlbumIdRole: return QString::fromStdString(song.albumId);
             case DurationRole: return static_cast<qlonglong>(song.duration);
             case CoverArtRole: {
-                QString path = QDir::current().absoluteFilePath("cache/" + QString::fromStdString(song.coverArt));
+                const QString path = QDir::current().absoluteFilePath("cache/" + QString::fromStdString(song.coverArt));
                 return QUrl::fromLocalFile(path).toString();
             }
             case PathRole: return QString::fromStdString(song.path);
@@ -62,5 +62,28 @@ namespace welle::model {
 
         const auto song = m_Songs.at(index - 1);
         qDebug() << "Playing song:" << QString::fromStdString(song.title);
+    }
+
+    void SongModel::appendSongs(const QList<medialib::types::Song> &songs) {
+        beginInsertRows(QModelIndex(), m_Songs.size(), m_Songs.size() + songs.size() - 1);
+        m_Songs.append(songs);
+        endInsertRows();
+        m_Offset += songs.size();
+
+        m_IsLoading = false;
+        emit isLoadingChanged();
+    }
+
+    void SongModel::setFetchNextPageCallback(const std::function<void(uint32_t, uint32_t)> &fetchNextPageCallback) {
+        m_FetchNextPageCallback = fetchNextPageCallback;
+    }
+
+    void SongModel::fetchNextPage() {
+        if (m_IsLoading || !m_HasMore || !m_FetchNextPageCallback) return;
+        m_IsLoading = true;
+        emit isLoadingChanged();
+        QThreadPool::globalInstance()->start([this] {
+            m_FetchNextPageCallback(m_Offset, m_PageSize);
+        });
     }
 }

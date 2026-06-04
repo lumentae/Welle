@@ -5,6 +5,7 @@ import QtQuick.Layouts
 ListView {
     anchors.fill: parent
     model: songModel
+    clip: true
 
     delegate: Rectangle {
         width: ListView.view.width
@@ -28,6 +29,7 @@ ListView {
             }
             Image {
                 source: coverArt
+                asynchronous: true
                 sourceSize.width: 56
                 sourceSize.height: 56
             }
@@ -35,7 +37,7 @@ ListView {
                 Layout.fillWidth: true
                 Text {
                     text: title
-                    color: "#E0E0E0"
+                    color: "#e0e0e0"
                     font.pixelSize: 15
                 }
                 Text {
@@ -69,5 +71,23 @@ ListView {
                 songModel.play(songIndex)
             }
         }
+    }
+
+    onContentYChanged: {
+        if (!songModel.isLoading && contentY + height >= contentHeight - 200)
+            songModel.fetchNextPage()
+    }
+
+    footer: Item {
+        width: parent.width
+        height: 40
+        visible: songModel.hasMore
+
+        BusyIndicator {
+            anchors.centerIn: parent
+            running: songModel.isLoading
+        }
+
+        Component.onCompleted: songModel.fetchNextPage()
     }
 }

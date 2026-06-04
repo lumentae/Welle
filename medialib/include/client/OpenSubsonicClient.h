@@ -17,8 +17,6 @@ namespace welle::medialib::client {
 
     class OpenSubsonicClient : public IClient<OpenSubsonicSearchParameters> {
     public:
-        using SearchParameters = OpenSubsonicSearchParameters;
-
         explicit OpenSubsonicClient(std::string serverUrl, std::string username, std::string password) :
             m_ServerUrl(std::move(serverUrl)),
             m_Password(std::move(password)),

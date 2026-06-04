@@ -5,6 +5,7 @@
 
 #include "client/OpenSubsonicClient.h"
 #include "model/SongModel.h"
+#include "utility/Qt.h"
 
 using namespace welle;
 
@@ -19,16 +20,14 @@ int main(int argc, char* argv[]) {
 
     medialib::client::OpenSubsonicClient client(argv[1], argv[2], argv[3]);
     client.ping();
-    const auto songs = client.getSongs({
-        .songCount = 100,
-        .songOffset = 121
+
+    songModel->setFetchNextPageCallback([&](const uint32_t offset, const uint32_t count) {
+        const auto newSongs = client.getSongs({
+            .songCount = count,
+            .songOffset = offset
+        });
+        songModel->appendSongs(utility::Qt::vectorToQList(newSongs));
     });
-
-    QList<medialib::types::Song> myList;
-    myList.reserve(songs.size());
-    std::ranges::copy(songs, std::back_inserter(myList));
-
-    songModel->setSongs(myList);
 
     return QGuiApplication::exec();
 }

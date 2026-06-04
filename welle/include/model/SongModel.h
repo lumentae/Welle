@@ -4,6 +4,8 @@
 #include <QAbstractListModel>
 #include <QList>
 #include <QtQml/qqmlregistration.h>
+
+#include "client/IClient.h"
 #include "types/Song.h"
 
 namespace welle::model {
@@ -33,9 +35,26 @@ namespace welle::model {
         QHash<int, QByteArray> roleNames() const override;
 
         Q_INVOKABLE void setSongs(const QList<medialib::types::Song>& songs);
+        Q_INVOKABLE void appendSongs(const QList<medialib::types::Song>& songs);
+        Q_INVOKABLE void setFetchNextPageCallback(const std::function<void(uint32_t, uint32_t)> &fetchNextPageCallback);
+        Q_INVOKABLE void fetchNextPage();
         Q_INVOKABLE void play(int index) const;
+
+        Q_PROPERTY(bool hasMore READ hasMore NOTIFY hasMoreChanged)
+        Q_PROPERTY(bool isLoading READ isLoading NOTIFY isLoadingChanged)
+        bool hasMore() const { return m_HasMore; }
+        bool isLoading() const { return m_IsLoading; }
+
+        signals:
+            void hasMoreChanged();
+            void isLoadingChanged();
 
     private:
         QList<medialib::types::Song> m_Songs;
+        std::function<void(uint32_t, uint32_t)> m_FetchNextPageCallback;
+        int m_Offset = 0;
+        int m_PageSize = 50;
+        bool m_HasMore = true;
+        bool m_IsLoading = false;
     };
 }
