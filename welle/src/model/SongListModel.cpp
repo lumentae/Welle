@@ -1,16 +1,16 @@
-#include <model/SongModel.h>
+#include <model/SongListModel.h>
 #include <QtConcurrent>
 
 #include "audio/AudioPlayer.h"
 
 namespace welle::model {
-    SongModel::SongModel(QObject *parent) : QAbstractListModel(parent) {}
+    SongListModel::SongListModel(QObject *parent) : QAbstractListModel(parent) {}
 
-    int SongModel::rowCount(const QModelIndex &parent) const {
+    int SongListModel::rowCount(const QModelIndex &parent) const {
         return m_Songs.size();
     }
 
-    QVariant SongModel::data(const QModelIndex &index, int role) const {
+    QVariant SongListModel::data(const QModelIndex &index, int role) const {
         if (!index.isValid() || index.row() >= m_Songs.size())
             return {};
 
@@ -34,7 +34,7 @@ namespace welle::model {
         }
     }
 
-    QHash<int, QByteArray> SongModel::roleNames() const {
+    QHash<int, QByteArray> SongListModel::roleNames() const {
         return {
             { IdRole,        "songId"    },
             { IndexRole,     "songIndex" },
@@ -50,13 +50,13 @@ namespace welle::model {
         };
     }
 
-    void SongModel::setSongs(const QList<medialib::types::Song> &songs) {
+    void SongListModel::setSongs(const QList<medialib::types::Song> &songs) {
         beginResetModel();
         m_Songs = songs;
         endResetModel();
     }
 
-    void SongModel::play(const int index) const {
+    void SongListModel::play(const int index) const {
         if (index < 1 || index > m_Songs.size())
             return;
 
@@ -66,7 +66,7 @@ namespace welle::model {
         audio::AudioPlayer::getInstance().play(song);
     }
 
-    void SongModel::appendSongs(const QList<medialib::types::Song> &songs) {
+    void SongListModel::appendSongs(const QList<medialib::types::Song> &songs) {
         beginInsertRows(QModelIndex(), m_Songs.size(), m_Songs.size() + songs.size() - 1);
         m_Songs.append(songs);
         endInsertRows();
@@ -76,11 +76,11 @@ namespace welle::model {
         emit isLoadingChanged();
     }
 
-    void SongModel::setFetchNextPageCallback(const std::function<void(uint32_t, uint32_t)> &fetchNextPageCallback) {
+    void SongListModel::setFetchNextPageCallback(const std::function<void(uint32_t, uint32_t)> &fetchNextPageCallback) {
         m_FetchNextPageCallback = fetchNextPageCallback;
     }
 
-    void SongModel::fetchNextPage() {
+    void SongListModel::fetchNextPage() {
         if (m_IsLoading || !m_HasMore || !m_FetchNextPageCallback) return;
         m_IsLoading = true;
         emit isLoadingChanged();
