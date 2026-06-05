@@ -21,9 +21,29 @@ Rectangle {
         anchors.fill: parent
         spacing: 10
 
-        Text {
+        Image {
+            source: songModel.currentCoverArt
+            width: 48
+            height: 48
+            asynchronous: true
+        }
+
+        ColumnLayout {
             Layout.leftMargin: 16
-            text: "Left"
+            Layout.fillHeight: true
+            spacing: 6
+            Text {
+                color: primaryTextColor
+                text: songModel.currentSong
+            }
+            Text {
+                color: primaryTextColor
+                text: songModel.currentArtist
+            }
+            Text {
+                color: primaryTextColor
+                text: songModel.currentAlbum
+            }
         }
 
         Item { Layout.fillWidth: true }

@@ -2,12 +2,16 @@ set(CMAKE_AUTOMOC ON)
 set(CMAKE_AUTORCC ON)
 set(CMAKE_AUTOUIC ON)
 
+add_subdirectory(external)
+
 find_package(Qt6 COMPONENTS Core Gui Quick Qml Concurrent REQUIRED)
 qt_standard_project_setup(REQUIRES 6.8)
 
 qt_add_executable(Welle
         src/main.cpp
         include/utility/Qt.h
+        src/audio/AudioPlayer.cpp
+        include/audio/AudioPlayer.h
 )
 
 qt_add_qml_module(Welle
@@ -33,6 +37,8 @@ target_link_libraries(Welle PRIVATE
         Qt6::Qml
         Qt6::Concurrent
         medialib
+        miniaudio
+        miniaudio_libopus
 )
 target_include_directories(Welle PUBLIC include include/model)
 

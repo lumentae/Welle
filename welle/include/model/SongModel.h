@@ -42,8 +42,15 @@ namespace welle::model {
 
         Q_PROPERTY(bool hasMore READ hasMore NOTIFY hasMoreChanged)
         Q_PROPERTY(bool isLoading READ isLoading NOTIFY isLoadingChanged)
+        //Q_PROPERTY(int currentIndex READ currentIndex NOTIFY currentIndexChanged)
+        //Q_PROPERTY(QString currentTitle READ currentTitle NOTIFY currentIndexChanged)
+        //Q_PROPERTY(QString currentArtist READ currentArtist NOTIFY currentIndexChanged)
+        //Q_PROPERTY(QString currentCoverArt READ currentCoverArt NOTIFY currentIndexChanged)
         bool hasMore() const { return m_HasMore; }
         bool isLoading() const { return m_IsLoading; }
+        //QString currentTitle() const;
+        //QString currentArtist() const;
+        //QString currentCoverArt() const;
 
         signals:
             void hasMoreChanged();

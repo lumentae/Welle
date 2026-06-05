@@ -102,4 +102,19 @@ namespace welle::medialib::client {
             });
         std::ofstream(cachePath, std::ios::binary) << response;
     }
+
+    void OpenSubsonicClient::downloadSong(const types::Song &song) {
+        if (!std::filesystem::exists({"songs"}))
+            std::filesystem::create_directory({"songs"});
+
+        const auto cachePath = std::filesystem::path("songs/" + song.id + "." + song.suffix);
+        if (std::filesystem::exists(cachePath))
+            return;
+
+        const auto response = performRequest("download",
+            {
+                {"id", song.id}
+            });
+        std::ofstream(cachePath, std::ios::binary) << response;
+    }
 }

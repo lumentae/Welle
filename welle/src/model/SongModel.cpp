@@ -1,7 +1,7 @@
 #include <model/SongModel.h>
-#include <QUrl>
-#include <QDir>
 #include <QtConcurrent>
+
+#include "audio/AudioPlayer.h"
 
 namespace welle::model {
     SongModel::SongModel(QObject *parent) : QAbstractListModel(parent) {}
@@ -62,6 +62,8 @@ namespace welle::model {
 
         const auto song = m_Songs.at(index - 1);
         qDebug() << "Playing song:" << QString::fromStdString(song.title);
+
+        audio::AudioPlayer::getInstance().play(song);
     }
 
     void SongModel::appendSongs(const QList<medialib::types::Song> &songs) {
