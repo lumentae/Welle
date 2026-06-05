@@ -9,20 +9,30 @@ ApplicationWindow {
     width: 800
     height: 600
     title: "Welle"
-    color: "#0f0f0f"
+    color: primaryColor
 
-    RowLayout {
+    ColumnLayout {
         anchors.fill: parent
         spacing: 0
 
-        Sidebar {
-            Layout.preferredWidth: 200
-            Layout.fillHeight: true
-        }
-        Content {
-            id: mainContent
+        RowLayout {
             Layout.fillWidth: true
             Layout.fillHeight: true
+            spacing: 0
+
+            Sidebar {
+                Layout.preferredWidth: 200
+                Layout.fillHeight: true
+            }
+            Content {
+                id: mainContent
+                Layout.fillWidth: true
+                Layout.fillHeight: true
+            }
+        }
+        BottomBar {
+            Layout.fillWidth: true
+            Layout.preferredHeight: 90
         }
     }
 }

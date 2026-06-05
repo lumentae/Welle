@@ -15,6 +15,12 @@ int main(int argc, char* argv[]) {
 
     auto* songModel = new model::SongModel(&engine);
     engine.rootContext()->setContextProperty("songModel", songModel);
+    engine.rootContext()->setContextProperty("primaryColor", "#0f0f0f");
+    engine.rootContext()->setContextProperty("primaryColorSelected", "#333");
+    engine.rootContext()->setContextProperty("primaryTextColor", "#e0e0e0");
+    engine.rootContext()->setContextProperty("secondaryColor", "#050505");
+    engine.rootContext()->setContextProperty("secondaryTextColor", "#666");
+    engine.rootContext()->setContextProperty("accentColor", "#ff0000");
 
     engine.loadFromModule("welle", "Main");
 

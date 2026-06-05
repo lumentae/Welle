@@ -15,7 +15,7 @@ Item {
         anchors.centerIn: parent;
         width: sidebar.width;
         height: parent.height;
-        color: (active || mouseArea.containsMouse) ? "#242424" : "transparent";
+        color: (active || mouseArea.containsMouse) ? primaryColorSelected : "transparent";
 
         Behavior on color { ColorAnimation { duration: 100; }}
 
@@ -35,7 +35,7 @@ Item {
                 Text {
                     height: 24;
                     text: textContent;
-                    color: active ? "#ff0000" : textColor ? textColor : "white";
+                    color: active ? accentColor : textColor ? textColor : "white";
                     verticalAlignment: Text.AlignVCenter;
 
                     Behavior on color { ColorAnimation { duration: 100; }}

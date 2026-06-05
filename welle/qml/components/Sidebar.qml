@@ -6,7 +6,7 @@ Rectangle {
     id: sidebar;
     width: 200;
     height: parent.height;
-    color: "#050505";
+    color: secondaryColor;
 
     property var selectedEntry;
 
@@ -15,7 +15,7 @@ Rectangle {
         anchors.top: parent.top;
         anchors.horizontalCenter: parent.horizontalCenter;
         spacing: 4;
-        topPadding: 20;
+        topPadding: 8;
 
         SidebarEntry {
             textContent: "Home";

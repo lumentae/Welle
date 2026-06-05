@@ -10,7 +10,7 @@ ListView {
     delegate: Rectangle {
         width: ListView.view.width
         height: 56
-        color: mouseArea.containsMouse ? "#333" : "#0F0F0F"
+        color: mouseArea.containsMouse ? primaryColorSelected : primaryColor
 
         Behavior on color { ColorAnimation { duration: 50 }}
 
@@ -23,7 +23,7 @@ ListView {
             Text {
                 Layout.leftMargin: 16
                 text: songIndex
-                color: "#666"
+                color: secondaryTextColor
                 font.pixelSize: 13
                 Layout.preferredWidth: 24
             }
@@ -37,18 +37,18 @@ ListView {
                 Layout.fillWidth: true
                 Text {
                     text: title
-                    color: "#e0e0e0"
+                    color: primaryTextColor
                     font.pixelSize: 15
                 }
                 Text {
                     text: artist
-                    color: "#666"
+                    color: secondaryTextColor
                     font.pixelSize: 13
                 }
             }
             Text {
                 text: album
-                color: "#666"
+                color: secondaryTextColor
                 font.pixelSize: 13
             }
             Text {
@@ -58,7 +58,7 @@ ListView {
                     const s = duration % 60;
                     return m + ":" + (s < 10 ? "0" + s : s)
                 }
-                color: "#666"
+                color: secondaryTextColor
                 font.pixelSize: 13
             }
         }
