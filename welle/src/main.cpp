@@ -5,7 +5,7 @@
 
 #include "audio/AudioPlayer.h"
 #include "client/OpenSubsonicClient.h"
-#include "model/SongModel.h"
+#include "model/SongListModel.h"
 #include "utility/Qt.h"
 
 using namespace welle;
@@ -22,7 +22,7 @@ int main(int argc, char* argv[]) {
         client.downloadSong(song);
     });
 
-    auto* songModel = new model::SongModel(&engine);
+    auto* songModel = new model::SongListModel(&engine);
     engine.rootContext()->setContextProperty("songModel", songModel);
     engine.rootContext()->setContextProperty("primaryColor", "#0f0f0f");
     engine.rootContext()->setContextProperty("primaryColorSelected", "#333");

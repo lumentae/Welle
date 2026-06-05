@@ -26,8 +26,8 @@ qt_add_qml_module(Welle
             qml/components/Content.qml
             qml/pages/Songs.qml
         SOURCES
-            src/model/SongModel.cpp
-            include/model/SongModel.h
+            src/model/SongListModel.cpp
+            include/model/SongListModel.h
 )
 
 target_link_libraries(Welle PRIVATE

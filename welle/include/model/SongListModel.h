@@ -5,11 +5,12 @@
 #include <QList>
 #include <QtQml/qqmlregistration.h>
 
+#include "audio/AudioPlayer.h"
 #include "client/IClient.h"
 #include "types/Song.h"
 
 namespace welle::model {
-    class SongModel : public QAbstractListModel {
+    class SongListModel : public QAbstractListModel {
         Q_OBJECT
         QML_ELEMENT
 
@@ -28,7 +29,7 @@ namespace welle::model {
             PlayCountRole,
         };
 
-        explicit SongModel(QObject* parent = nullptr);
+        explicit SongListModel(QObject* parent = nullptr);
 
         int rowCount(const QModelIndex& parent = QModelIndex()) const override;
         QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
@@ -42,19 +43,25 @@ namespace welle::model {
 
         Q_PROPERTY(bool hasMore READ hasMore NOTIFY hasMoreChanged)
         Q_PROPERTY(bool isLoading READ isLoading NOTIFY isLoadingChanged)
-        //Q_PROPERTY(int currentIndex READ currentIndex NOTIFY currentIndexChanged)
-        //Q_PROPERTY(QString currentTitle READ currentTitle NOTIFY currentIndexChanged)
-        //Q_PROPERTY(QString currentArtist READ currentArtist NOTIFY currentIndexChanged)
-        //Q_PROPERTY(QString currentCoverArt READ currentCoverArt NOTIFY currentIndexChanged)
+        Q_PROPERTY(QString currentTitle READ currentTitle)
+        Q_PROPERTY(QString currentArtist READ currentArtist)
+        Q_PROPERTY(QString currentCoverArt READ currentCoverArt)
         bool hasMore() const { return m_HasMore; }
         bool isLoading() const { return m_IsLoading; }
-        //QString currentTitle() const;
-        //QString currentArtist() const;
-        //QString currentCoverArt() const;
+        static QString currentTitle() {
+            return QString::fromStdString(audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().title);
+        }
+        static QString currentArtist() {
+            return QString::fromStdString(audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().artist);
+        }
+        static QString currentCoverArt() {
+            return QString::fromStdString(audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().coverArt);
+        }
 
         signals:
             void hasMoreChanged();
             void isLoadingChanged();
+            void currentSongChanged();
 
     private:
         QList<medialib::types::Song> m_Songs;
