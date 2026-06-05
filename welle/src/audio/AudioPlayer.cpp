@@ -38,19 +38,16 @@ namespace welle::audio {
         if (!std::filesystem::exists(soundPath))
             m_DownloadSong(song);
 
-        if (m_Sound) {
-            ma_sound_stop(m_Sound.get());
-            ma_sound_uninit(m_Sound.get());
-            m_Sound.reset();
-        }
+        stop();
 
         m_Sound = std::make_unique<ma_sound>();
+        m_CurrentlyPlayingSong = song;
 
         if (const auto r = ma_sound_init_from_file(
             &m_Engine,
             soundPath.string().c_str(),
             MA_SOUND_FLAG_STREAM,
-            nullptr, 
+            nullptr,
             nullptr,
             m_Sound.get()
         ); r != MA_SUCCESS)
@@ -61,5 +58,19 @@ namespace welle::audio {
 
         if (const ma_result r = ma_sound_start(m_Sound.get()); r != MA_SUCCESS)
             throw std::runtime_error("ma_sound_start failed");
+
+        ma_sound_set_end_callback(m_Sound.get(), [](void *pUserData, ma_sound *pSound) {
+            auto* player = static_cast<AudioPlayer*>(pUserData);
+            player->stop();
+        }, this);
+    }
+
+    void AudioPlayer::stop() {
+        if (m_Sound) {
+            ma_sound_stop(m_Sound.get());
+            ma_sound_uninit(m_Sound.get());
+            m_Sound.reset();
+        }
+        m_CurrentlyPlayingSong = {};
     }
 }
