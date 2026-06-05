@@ -21,6 +21,7 @@ int main(int argc, char* argv[]) {
     engine.rootContext()->setContextProperty("secondaryColor", "#050505");
     engine.rootContext()->setContextProperty("secondaryTextColor", "#666");
     engine.rootContext()->setContextProperty("accentColor", "#ff0000");
+    engine.rootContext()->setContextProperty("borderColor", "#2a2a2a");
 
     engine.loadFromModule("welle", "Main");
 
