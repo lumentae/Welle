@@ -56,9 +56,6 @@ namespace welle::audio {
         if (const ma_result r = ma_sound_seek_to_second(m_Sound.get(), 0); r != MA_SUCCESS)
             throw std::runtime_error("ma_sound_start failed");
 
-        // TODO: remove this when committing
-        ma_sound_set_volume(m_Sound.get(), 0.0f);
-
         if (const ma_result r = ma_sound_start(m_Sound.get()); r != MA_SUCCESS)
             throw std::runtime_error("ma_sound_start failed");
 
