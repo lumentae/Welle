@@ -18,6 +18,9 @@ namespace welle::audio {
         void stop();
 
         medialib::types::Song getCurrentlyPlayingSong() { return m_CurrentlyPlayingSong; }
+        float position() const;
+
+        const ma_sound* sound() const { return m_Sound.get(); }
 
     private:
         ma_engine m_Engine{};

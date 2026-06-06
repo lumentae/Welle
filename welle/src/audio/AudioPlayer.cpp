@@ -75,4 +75,10 @@ namespace welle::audio {
         }
         m_CurrentlyPlayingSong = {};
     }
+
+    float AudioPlayer::position() const {
+        float position = 0;
+        ma_sound_get_cursor_in_seconds(m_Sound.get(), &position);
+        return position;
+    }
 }

@@ -39,28 +39,28 @@ Rectangle {
                 Layout.fillWidth: true
                 spacing: 4
                 Text {
-                    text: playingSong.title.length > 60
-                        ? playingSong.title.slice(0, 60) + "..."
-                        : playingSong.title;
-                    color: primaryTextColor;
-                    font.pixelSize: Qt.application.font.pixelSize + 2;
+                    Layout.fillWidth: true
+                    text: playingSong.title
+                    color: primaryTextColor
+                    font.pixelSize: Qt.application.font.pixelSize + 2
                     elide: Text.ElideRight
+                    maximumLineCount: 1
                 }
                 Text {
-                    text: playingSong.artist.length > 70
-                        ? playingSong.artist.slice(0, 70) + "..."
-                        : playingSong.artist;
+                    Layout.fillWidth: true
+                    text: playingSong.artist
                     color: secondaryTextColor;
                     font.pixelSize: Qt.application.font.pixelSize;
                     elide: Text.ElideRight
+                    maximumLineCount: 1
                 }
                 Text {
-                    text: playingSong.album.length > 70
-                        ? playingSong.album.slice(0, 70) + "..."
-                        : playingSong.album;
+                    Layout.fillWidth: true
+                    text: playingSong.album;
                     color: secondaryTextColor;
                     font.pixelSize: Qt.application.font.pixelSize;
                     elide: Text.ElideRight
+                    maximumLineCount: 1
                 }
             }
         }
@@ -76,7 +76,12 @@ Rectangle {
                 spacing: 8
 
                 Text {
-                    text: "0:00"
+                    text: {
+                        const total = Math.floor(playingSong.position)
+                        const m = Math.floor(total / 60)
+                        const s = total % 60
+                        return m + ":" + (s < 10 ? "0" + s : s)
+                    }
                     color: primaryTextColor
                     width: 36
                     horizontalAlignment: Text.AlignLeft
@@ -88,6 +93,19 @@ Rectangle {
                     radius: 3
                     anchors.verticalCenter: parent.verticalCenter
                     color: secondaryTextColor
+
+                    Rectangle {
+                        width: playingSong.duration > 0
+                            ? (playingSong.position / playingSong.duration) * parent.width
+                            : 0
+                        height: parent.height
+                        radius: parent.radius
+                        color: primaryTextColor
+
+                        Behavior on width {
+                            NumberAnimation { duration: 100; easing.type: Easing.Linear; }
+                        }
+                    }
                 }
                 Text {
                     text: {

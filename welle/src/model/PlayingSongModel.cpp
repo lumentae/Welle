@@ -7,7 +7,15 @@
 #include "types/Song.h"
 
 namespace welle::model {
-    PlayingSongModel::PlayingSongModel(QObject *parent) : QObject(parent) {}
+    PlayingSongModel::PlayingSongModel(QObject *parent) : QObject(parent) {
+        m_PollTimer = new QTimer(this);
+        connect(m_PollTimer, &QTimer::timeout, this, [this] {
+            if (ma_sound_is_playing(audio::AudioPlayer::getInstance().sound())) {
+                emit positionChanged();
+            }
+        });
+        m_PollTimer->start(100);
+    }
 
     QString PlayingSongModel::title() {
         return QString::fromStdString(audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().title);
@@ -25,8 +33,12 @@ namespace welle::model {
         return QString::fromStdString(audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().albumId);
     }
 
-    QString PlayingSongModel::duration() {
-        return QString::number(audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().duration);
+    int PlayingSongModel::duration() {
+        return audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().duration;
+    }
+
+    float PlayingSongModel::position() {
+        return audio::AudioPlayer::getInstance().position();
     }
 
     QUrl PlayingSongModel::coverArt() {
