@@ -12,6 +12,8 @@ qt_add_executable(Welle
         include/utility/Qt.h
         src/audio/AudioPlayer.cpp
         include/audio/AudioPlayer.h
+        src/model/PlayingSongModel.cpp
+        include/model/PlayingSongModel.h
 )
 
 qt_add_qml_module(Welle

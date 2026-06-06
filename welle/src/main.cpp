@@ -3,6 +3,7 @@
 #include <QQmlApplicationEngine>
 #include <qqmlcontext.h>
 
+#include "PlayingSongModel.h"
 #include "audio/AudioPlayer.h"
 #include "client/OpenSubsonicClient.h"
 #include "model/SongListModel.h"
@@ -22,8 +23,10 @@ int main(int argc, char* argv[]) {
         client.downloadSong(song);
     });
 
-    auto* songModel = new model::SongListModel(&engine);
-    engine.rootContext()->setContextProperty("songModel", songModel);
+    auto* songListModel = new model::SongListModel(&engine);
+    auto* playingSongModel = new model::PlayingSongModel(&engine);
+    engine.rootContext()->setContextProperty("songListModel", songListModel);
+    engine.rootContext()->setContextProperty("playingSong", playingSongModel);
     engine.rootContext()->setContextProperty("primaryColor", "#0f0f0f");
     engine.rootContext()->setContextProperty("primaryColorSelected", "#333");
     engine.rootContext()->setContextProperty("primaryTextColor", "#e0e0e0");
@@ -34,12 +37,16 @@ int main(int argc, char* argv[]) {
 
     engine.loadFromModule("welle", "Main");
 
-    songModel->setFetchNextPageCallback([&](const uint32_t offset, const uint32_t count) {
+    songListModel->setFetchNextPageCallback([&](const uint32_t offset, const uint32_t count) {
         const auto newSongs = client.getSongs({
             .songCount = count,
             .songOffset = offset
         });
-        songModel->appendSongs(utility::Qt::vectorToQList(newSongs));
+        songListModel->appendSongs(utility::Qt::vectorToQList(newSongs));
+    });
+
+    audio::AudioPlayer::getInstance().setAfterPlayCallback([&] {
+        playingSongModel->update();
     });
 
     return QGuiApplication::exec();

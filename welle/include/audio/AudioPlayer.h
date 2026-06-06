@@ -13,6 +13,7 @@ namespace welle::audio {
         }
 
         void initialize(const std::function<void(const medialib::types::Song&)>& downloadSong);
+        void setAfterPlayCallback(const std::function<void()>& callback) { m_AfterPlayCallback = callback; }
         void play(const medialib::types::Song& song);
         void stop();
 
@@ -26,5 +27,6 @@ namespace welle::audio {
         ma_resource_manager m_ResourceManager{};
         ma_engine_config m_EngineConfig{};
         std::function<void(const medialib::types::Song &)> m_DownloadSong{};
+        std::function<void()> m_AfterPlayCallback{};
     };
 }

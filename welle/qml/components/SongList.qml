@@ -4,7 +4,7 @@ import QtQuick.Layouts
 
 ListView {
     anchors.fill: parent
-    model: songModel
+    model: songListModel
     clip: true
 
     delegate: Rectangle {
@@ -68,26 +68,26 @@ ListView {
             anchors.fill: parent
             hoverEnabled: true
             onClicked: {
-                songModel.play(songIndex)
+                songListModel.play(songIndex)
             }
         }
     }
 
     onContentYChanged: {
-        if (!songModel.isLoading && contentY + height >= contentHeight - 200)
-            songModel.fetchNextPage()
+        if (!songListModel.isLoading && contentY + height >= contentHeight - 200)
+            songListModel.fetchNextPage()
     }
 
     footer: Item {
         width: parent.width
         height: 40
-        visible: songModel.hasMore
+        visible: songListModel.hasMore
 
         BusyIndicator {
             anchors.centerIn: parent
-            running: songModel.isLoading
+            running: songListModel.isLoading
         }
 
-        Component.onCompleted: songModel.fetchNextPage()
+        Component.onCompleted: songListModel.fetchNextPage()
     }
 }
