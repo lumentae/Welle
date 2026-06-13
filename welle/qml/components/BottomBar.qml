@@ -88,6 +88,7 @@ Rectangle {
                     anchors.verticalCenter: parent.verticalCenter
                 }
                 Rectangle {
+                    id: seekBar
                     width: parent.width - 36 - 36 - 16
                     height: 8
                     radius: 3
@@ -95,26 +96,43 @@ Rectangle {
                     color: secondaryTextColor
 
                     Rectangle {
-                        width: playingSong.duration > 0
-                            ? (playingSong.position / playingSong.duration) * parent.width
-                            : 0
+                        id: progressBar
+                        width: 0
                         height: parent.height
                         radius: parent.radius
                         color: primaryTextColor
 
-                        Behavior on width {
-                            NumberAnimation { duration: 100; easing.type: Easing.Linear; }
+                        Connections {
+                            target: playingSong
+                            function onPositionChanged() {
+                                if (!seekMouseArea.pressed) {
+                                    progressBar.width = playingSong.duration > 0
+                                        ? (playingSong.position / playingSong.duration) * seekBar.width
+                                        : 0
+                                }
+                            }
                         }
 
-                        DragHandler {}
+                        Behavior on width {
+                            enabled: !seekMouseArea.pressed
+                            NumberAnimation { duration: 100; easing.type: Easing.Linear; }
+                        }
                     }
 
                     MouseArea {
-                        width: parent.width
-                        height: parent.height
-
+                        id: seekMouseArea
+                        anchors.fill: parent
                         onClicked: (mouse) => {
                             playingSong.setPosition(mouse.x / parent.width * playingSong.duration)
+                        }
+                        onPressed: (mouse) => {
+                            progressBar.width = Math.max(0, Math.min(mouse.x, seekBar.width))
+                        }
+                        onPositionChanged: (mouse) => {
+                            progressBar.width = Math.max(0, Math.min(mouse.x, seekBar.width))
+                        }
+                        onReleased: {
+                            playingSong.setPosition(progressBar.width / seekBar.width * playingSong.duration)
                         }
                     }
                 }
