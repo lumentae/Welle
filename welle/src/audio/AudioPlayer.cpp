@@ -81,4 +81,8 @@ namespace welle::audio {
         ma_sound_get_cursor_in_seconds(m_Sound.get(), &position);
         return position;
     }
+
+    void AudioPlayer::seek(const float position) const {
+        ma_sound_seek_to_second(m_Sound.get(), position);
+    }
 }

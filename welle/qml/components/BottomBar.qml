@@ -105,6 +105,17 @@ Rectangle {
                         Behavior on width {
                             NumberAnimation { duration: 100; easing.type: Easing.Linear; }
                         }
+
+                        DragHandler {}
+                    }
+
+                    MouseArea {
+                        width: parent.width
+                        height: parent.height
+
+                        onClicked: (mouse) => {
+                            playingSong.setPosition(mouse.x / parent.width * playingSong.duration)
+                        }
                     }
                 }
                 Text {

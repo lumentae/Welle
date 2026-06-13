@@ -41,6 +41,10 @@ namespace welle::model {
         return audio::AudioPlayer::getInstance().position();
     }
 
+    void PlayingSongModel::setPosition(const float position) {
+        audio::AudioPlayer::getInstance().seek(position);
+    }
+
     QUrl PlayingSongModel::coverArt() {
         const QString path = QDir::current().absoluteFilePath("cache/" + QString::fromStdString(audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().coverArt));
         return QUrl::fromLocalFile(path);
