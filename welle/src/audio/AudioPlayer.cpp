@@ -33,12 +33,19 @@ namespace welle::audio {
         m_DownloadSong = downloadSong;
     }
 
-    void AudioPlayer::play(const medialib::types::Song& song) {
+    void AudioPlayer::play(const medialib::types::Song& song, const bool resume) {
         const auto soundPath = std::filesystem::path{"songs/" + song.id + "." + song.suffix};
         if (!std::filesystem::exists(soundPath))
             m_DownloadSong(song);
 
+        if (resume && m_Sound) {
+            ma_sound_start(m_Sound.get());
+            return;
+        }
         stop();
+
+        if (m_CurrentlyPlayingSong.id != song.id)
+            ma_sound_uninit(m_Sound.get());
 
         m_Sound = std::make_unique<ma_sound>();
         m_CurrentlyPlayingSong = song;
@@ -68,13 +75,9 @@ namespace welle::audio {
 
     void AudioPlayer::stop() {
         m_StopRequested.exchange(false);
-        if (m_Sound) {
-            if (ma_sound_is_playing(m_Sound.get()))
-                ma_sound_stop(m_Sound.get());
-            ma_sound_uninit(m_Sound.get());
-            m_Sound.reset();
-        }
-        m_CurrentlyPlayingSong = {};
+        if (!m_Sound) return;
+        if (!ma_sound_is_playing(m_Sound.get())) return;
+        ma_sound_stop(m_Sound.get());
     }
 
     float AudioPlayer::position() const {

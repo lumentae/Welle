@@ -48,6 +48,13 @@ namespace welle::model {
         audio::AudioPlayer::getInstance().seek(position);
     }
 
+    void PlayingSongModel::playOrPause() {
+        if (auto& audioPlayer = audio::AudioPlayer::getInstance(); ma_sound_is_playing(audioPlayer.sound()))
+            audioPlayer.stop();
+        else if (!audioPlayer.getCurrentlyPlayingSong().id.empty())
+            audioPlayer.play(audioPlayer.getCurrentlyPlayingSong(), true);
+    }
+
     QUrl PlayingSongModel::coverArt() {
         const QString path = QDir::current().absoluteFilePath("cache/" + QString::fromStdString(audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().coverArt));
         return QUrl::fromLocalFile(path);

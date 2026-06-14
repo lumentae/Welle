@@ -70,82 +70,120 @@ Rectangle {
             Layout.fillWidth: true
             Layout.fillHeight: true
 
-            Row {
+            ColumnLayout {
+                width: parent.width
                 anchors.centerIn: parent
-                width: parent.width - 32
-                spacing: 8
+                spacing: 4
 
-                Text {
-                    text: {
-                        const total = Math.floor(playingSong.position)
-                        const m = Math.floor(total / 60)
-                        const s = total % 60
-                        return m + ":" + (s < 10 ? "0" + s : s)
-                    }
-                    color: primaryTextColor
-                    width: 36
-                    horizontalAlignment: Text.AlignLeft
-                    anchors.verticalCenter: parent.verticalCenter
-                }
-                Rectangle {
-                    id: seekBar
-                    width: parent.width - 36 - 36 - 16
-                    height: 8
-                    radius: 3
-                    anchors.verticalCenter: parent.verticalCenter
-                    color: secondaryTextColor
+                RowLayout {
+                    Layout.fillWidth: true
+                    Layout.preferredHeight: 36
 
+                    // margin left
                     Rectangle {
-                        id: progressBar
-                        width: 0
-                        height: parent.height
-                        radius: parent.radius
-                        color: primaryTextColor
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        color: accentColor
+                    }
 
-                        Connections {
-                            target: playingSong
-                            function onPositionChanged() {
-                                if (!seekMouseArea.pressed) {
-                                    progressBar.width = playingSong.duration > 0
-                                        ? (playingSong.position / playingSong.duration) * seekBar.width
-                                        : 0
+                    RoundButton {
+                        width: parent.height
+                        height: parent.height
+                        onClicked: {
+                            playingSong.playOrPause()
+                        }
+                        background: Rectangle {
+                            color: accentColor
+                            implicitWidth: parent.width
+                            implicitHeight: parent.height
+                            radius: parent.height / 2
+                        }
+                    }
+
+                    // margin right
+                    Rectangle {
+                        Layout.fillWidth: true
+                        Layout.fillHeight: true
+                        color: borderColor
+                    }
+                }
+                Row {
+                    Layout.fillWidth: true
+                    Layout.leftMargin: 16
+                    Layout.rightMargin: 16
+                    spacing: 8
+                    Text {
+                        text: {
+                            const total = Math.floor(playingSong.position)
+                            const m = Math.floor(total / 60)
+                            const s = total % 60
+                            return m + ":" + (s < 10 ? "0" + s : s)
+                        }
+                        color: primaryTextColor
+                        width: 36
+                        horizontalAlignment: Text.AlignLeft
+                        anchors.verticalCenter: parent.verticalCenter
+                    }
+                    Rectangle {
+                        id: seekBar
+                        width: parent.width - 36 - 36 - 16
+                        height: 8
+                        radius: 3
+                        anchors.verticalCenter: parent.verticalCenter
+                        color: secondaryTextColor
+
+                        Rectangle {
+                            id: progressBar
+                            width: 0
+                            height: parent.height
+                            radius: parent.radius
+                            color: primaryTextColor
+
+                            Connections {
+                                target: playingSong
+                                function onPositionChanged() {
+                                    if (!seekMouseArea.pressed) {
+                                        progressBar.width = playingSong.duration > 0
+                                            ? (playingSong.position / playingSong.duration) * seekBar.width
+                                            : 0
+                                    }
                                 }
+                            }
+
+                            Behavior on width {
+                                enabled: !seekMouseArea.pressed
+                                NumberAnimation { duration: 100; easing.type: Easing.Linear; }
                             }
                         }
 
-                        Behavior on width {
-                            enabled: !seekMouseArea.pressed
-                            NumberAnimation { duration: 100; easing.type: Easing.Linear; }
+                        MouseArea {
+                            id: seekMouseArea
+                            anchors.fill: parent
+                            onClicked: (mouse) => {
+                                playingSong.setPosition(mouse.x / parent.width * playingSong.duration)
+                            }
+                            onPressed: (mouse) => {
+                                progressBar.width = Math.max(0, Math.min(mouse.x, seekBar.width))
+                            }
+                            onPositionChanged: (mouse) => {
+                                progressBar.width = Math.max(0, Math.min(mouse.x, seekBar.width))
+                            }
+                            onReleased: {
+                                playingSong.setPosition(progressBar.width / seekBar.width * playingSong.duration)
+                            }
                         }
                     }
-
-                    MouseArea {
-                        id: seekMouseArea
-                        anchors.fill: parent
-                        onClicked: (mouse) => {
-                            playingSong.setPosition(mouse.x / parent.width * playingSong.duration)
+                    Text {
+                        text: {
+                            const m = Math.floor(playingSong.duration / 60)
+                            const s = playingSong.duration % 60
+                            return m + ":" + (s < 10 ? "0" + s : s)
                         }
-                        onPressed: (mouse) => {
-                            progressBar.width = Math.max(0, Math.min(mouse.x, seekBar.width))
-                        }
-                        onPositionChanged: (mouse) => {
-                            progressBar.width = Math.max(0, Math.min(mouse.x, seekBar.width))
-                        }
-                        onReleased: {
-                            playingSong.setPosition(progressBar.width / seekBar.width * playingSong.duration)
-                        }
+                        color: primaryTextColor
+                        width: 36
+                        horizontalAlignment: Text.AlignRight
+                        anchors.verticalCenter: parent.verticalCenter
                     }
-                }
-                Text {
-                    text: {
-                        const m = Math.floor(playingSong.duration / 60)
-                        const s = playingSong.duration % 60
-                        return m + ":" + (s < 10 ? "0" + s : s)
-                    }
-                    color: secondaryTextColor
-                    width: 36
-                    horizontalAlignment: Text.AlignRight
-                    anchors.verticalCenter: parent.verticalCenter
                 }
             }
         }

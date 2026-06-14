@@ -63,7 +63,7 @@ namespace welle::model {
         const auto song = m_Songs.at(index - 1);
         qDebug() << "Playing song:" << QString::fromStdString(song.title);
 
-        audio::AudioPlayer::getInstance().play(song);
+        audio::AudioPlayer::getInstance().play(song, {});
     }
 
     void SongListModel::appendSongs(const QList<medialib::types::Song> &songs) {

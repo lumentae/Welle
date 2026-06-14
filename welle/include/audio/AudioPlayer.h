@@ -14,7 +14,7 @@ namespace welle::audio {
 
         void initialize(const std::function<void(const medialib::types::Song&)>& downloadSong);
         void setAfterPlayCallback(const std::function<void()>& callback) { m_AfterPlayCallback = callback; }
-        void play(const medialib::types::Song& song);
+        void play(const medialib::types::Song &song, bool resume = false);
         void stop();
 
         medialib::types::Song getCurrentlyPlayingSong() { return m_CurrentlyPlayingSong; }
