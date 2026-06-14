@@ -10,9 +10,12 @@ namespace welle::model {
     PlayingSongModel::PlayingSongModel(QObject *parent) : QObject(parent) {
         m_PollTimer = new QTimer(this);
         connect(m_PollTimer, &QTimer::timeout, this, [this] {
-            if (ma_sound_is_playing(audio::AudioPlayer::getInstance().sound())) {
+            auto& audioPlayer = audio::AudioPlayer::getInstance();
+            if (ma_sound_is_playing(audioPlayer.sound())) {
                 emit positionChanged();
             }
+            if (audioPlayer.stopRequested())
+                audioPlayer.stop();
         });
         m_PollTimer->start(100);
     }

@@ -60,16 +60,17 @@ namespace welle::audio {
             throw std::runtime_error("ma_sound_start failed");
 
         ma_sound_set_end_callback(m_Sound.get(), [](void *pUserData, ma_sound *pSound) {
-            auto* player = static_cast<AudioPlayer*>(pUserData);
-            player->stop();
+            static_cast<AudioPlayer*>(pUserData)->m_StopRequested.exchange(true);
         }, this);
 
         m_AfterPlayCallback();
     }
 
     void AudioPlayer::stop() {
+        m_StopRequested.exchange(false);
         if (m_Sound) {
-            ma_sound_stop(m_Sound.get());
+            if (ma_sound_is_playing(m_Sound.get()))
+                ma_sound_stop(m_Sound.get());
             ma_sound_uninit(m_Sound.get());
             m_Sound.reset();
         }

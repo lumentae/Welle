@@ -23,9 +23,12 @@ namespace welle::audio {
 
         const ma_sound* sound() const { return m_Sound.get(); }
 
+        [[nodiscard]] bool stopRequested() const { return m_StopRequested; }
+
     private:
         ma_engine m_Engine{};
         std::unique_ptr<ma_sound> m_Sound{};
+        std::atomic<bool> m_StopRequested{false};
         medialib::types::Song m_CurrentlyPlayingSong{};
         ma_resource_manager_config m_ResourceManagerConfig{};
         ma_resource_manager m_ResourceManager{};
