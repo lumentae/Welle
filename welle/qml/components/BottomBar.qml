@@ -83,17 +83,23 @@ Rectangle {
                     Rectangle {
                         Layout.fillWidth: true
                         Layout.fillHeight: true
-                        color: accentColor
                     }
 
                     RoundButton {
-                        width: parent.height
-                        height: parent.height
+                        implicitWidth: parent.height
+                        implicitHeight: parent.height
                         onClicked: {
                             playingSong.playOrPause()
                         }
+                        contentItem: Text {
+                            font.family: "Material Symbols Rounded"
+                            font.pixelSize: 24
+                            text: "\ue034"
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                        }
                         background: Rectangle {
-                            color: accentColor
+                            color: "white"
                             implicitWidth: parent.width
                             implicitHeight: parent.height
                             radius: parent.height / 2
@@ -104,7 +110,6 @@ Rectangle {
                     Rectangle {
                         Layout.fillWidth: true
                         Layout.fillHeight: true
-                        color: borderColor
                     }
                 }
                 Row {
