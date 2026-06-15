@@ -35,4 +35,8 @@ ApplicationWindow {
             Layout.preferredHeight: 90
         }
     }
+
+    FontLoader {
+        source: "qrc:/qt/qml/welle/external/MaterialSymbols/MaterialSymbols.ttf"
+    }
 }

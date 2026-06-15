@@ -30,6 +30,8 @@ qt_add_qml_module(Welle
         SOURCES
             src/model/SongListModel.cpp
             include/model/SongListModel.h
+        RESOURCES
+            external/MaterialSymbols/MaterialSymbols.ttf
 )
 
 target_link_libraries(Welle PRIVATE
