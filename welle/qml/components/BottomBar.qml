@@ -81,6 +81,7 @@ Rectangle {
 
                     // margin left
                     Rectangle {
+                        color: "transparent"
                         Layout.fillWidth: true
                         Layout.fillHeight: true
                     }
@@ -108,6 +109,7 @@ Rectangle {
 
                     // margin right
                     Rectangle {
+                        color: "transparent"
                         Layout.fillWidth: true
                         Layout.fillHeight: true
                     }
