@@ -13,5 +13,13 @@ namespace welle::utility {
             std::ranges::copy(vector, std::back_inserter(qList));
             return qList;
         }
+
+        template <typename T>
+        static std::vector<T> qListToVector(QList<T> qList) {
+            std::vector<T> vector;
+            vector.reserve(qList.size());
+            std::ranges::copy(qList, std::back_inserter(vector));
+            return vector;
+        }
     };
 }

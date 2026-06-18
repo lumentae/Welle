@@ -1,7 +1,9 @@
 #include <iostream>
 #include <QDir>
+#include <thread>
 #include <audio/AudioPlayer.h>
 
+#include "Queue.h"
 #include "extras/decoders/libopus/miniaudio_libopus.h"
 
 namespace welle::audio {
@@ -44,8 +46,12 @@ namespace welle::audio {
         }
         stop();
 
-        if (m_CurrentlyPlayingSong.id != song.id)
-            ma_sound_uninit(m_Sound.get());
+        if (m_CurrentlyPlayingSong.id != song.id) {
+            auto oldSound = std::move(m_Sound);
+            std::thread([oldSound = std::move(oldSound)]() mutable {
+                ma_sound_uninit(oldSound.get());
+            }).detach();
+        }
 
         m_Sound = std::make_unique<ma_sound>();
         m_CurrentlyPlayingSong = song;
@@ -53,7 +59,7 @@ namespace welle::audio {
         if (const auto r = ma_sound_init_from_file(
             &m_Engine,
             soundPath.string().c_str(),
-            MA_SOUND_FLAG_STREAM,
+            MA_SOUND_FLAG_STREAM | MA_SOUND_FLAG_NO_PITCH,
             nullptr,
             nullptr,
             m_Sound.get()
@@ -68,6 +74,7 @@ namespace welle::audio {
 
         ma_sound_set_end_callback(m_Sound.get(), [](void *pUserData, ma_sound *pSound) {
             static_cast<AudioPlayer*>(pUserData)->m_StopRequested.exchange(true);
+            medialib::Queue::getInstance().next();
         }, this);
 
         m_AfterPlayCallback();

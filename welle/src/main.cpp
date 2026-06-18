@@ -4,6 +4,7 @@
 #include <qqmlcontext.h>
 
 #include "PlayingSongModel.h"
+#include "Queue.h"
 #include "audio/AudioPlayer.h"
 #include "client/OpenSubsonicClient.h"
 #include "model/SongListModel.h"
@@ -36,6 +37,12 @@ int main(int argc, char* argv[]) {
     engine.rootContext()->setContextProperty("borderColor", "#2a2a2a");
 
     engine.loadFromModule("welle", "Main");
+
+    medialib::Queue::getInstance().setOnSongChanged([&](const medialib::types::Song& song) {
+        std::cout << "Playing " << song.title << "..." << std::endl;
+        audio::AudioPlayer::getInstance().play(song, false);
+        playingSongModel->update();
+    });
 
     songListModel->setFetchNextPageCallback([&](const uint32_t offset, const uint32_t count) {
         const auto newSongs = client.getSongs({

@@ -44,6 +44,10 @@ namespace welle::model {
         return audio::AudioPlayer::getInstance().position();
     }
 
+    bool PlayingSongModel::paused() {
+        return ma_sound_is_playing(audio::AudioPlayer::getInstance().sound());
+    }
+
     void PlayingSongModel::setPosition(const float position) {
         audio::AudioPlayer::getInstance().seek(position);
     }

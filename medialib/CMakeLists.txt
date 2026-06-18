@@ -7,6 +7,8 @@ add_library(medialib STATIC
         include/types/Song.h
         include/types/Artist.h
         include/types/Album.h
+        src/Queue.cpp
+        include/Queue.h
 )
 
 target_link_libraries(medialib PUBLIC
