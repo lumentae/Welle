@@ -45,7 +45,7 @@ namespace welle::model {
     }
 
     bool PlayingSongModel::paused() {
-        return ma_sound_is_playing(audio::AudioPlayer::getInstance().sound());
+        return !ma_sound_is_playing(audio::AudioPlayer::getInstance().sound());
     }
 
     void PlayingSongModel::setPosition(const float position) {
@@ -57,6 +57,7 @@ namespace welle::model {
             audioPlayer.stop();
         else if (!audioPlayer.getCurrentlyPlayingSong().id.empty())
             audioPlayer.play(audioPlayer.getCurrentlyPlayingSong(), true);
+        emit pausedChanged();
     }
 
     QUrl PlayingSongModel::coverArt() {

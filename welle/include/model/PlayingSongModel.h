@@ -39,7 +39,7 @@ namespace welle::model {
         void update() { emit songChanged(); emit positionChanged(); emit pausedChanged(); }
 
         Q_INVOKABLE static void setPosition(float position);
-        Q_INVOKABLE static void playOrPause();
+        Q_INVOKABLE void playOrPause();
 
         signals:
             void songChanged();
