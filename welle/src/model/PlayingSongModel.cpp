@@ -3,6 +3,7 @@
 #include <QDir>
 #include <QUrl>
 
+#include "Queue.h"
 #include "audio/AudioPlayer.h"
 #include "types/Song.h"
 
@@ -58,6 +59,14 @@ namespace welle::model {
         else if (!audioPlayer.getCurrentlyPlayingSong().id.empty())
             audioPlayer.play(audioPlayer.getCurrentlyPlayingSong(), true);
         emit pausedChanged();
+    }
+
+    void PlayingSongModel::next() {
+        medialib::Queue::getInstance().next();
+    }
+
+    void PlayingSongModel::previous() {
+        medialib::Queue::getInstance().previous();
     }
 
     QUrl PlayingSongModel::coverArt() {

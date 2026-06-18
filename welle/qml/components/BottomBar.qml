@@ -78,6 +78,7 @@ Rectangle {
                 RowLayout {
                     Layout.fillWidth: true
                     Layout.preferredHeight: 36
+                    spacing: 4
 
                     // margin left
                     Rectangle {
@@ -86,6 +87,30 @@ Rectangle {
                         Layout.fillHeight: true
                     }
 
+                    // Previous button
+                    RoundButton {
+                        implicitWidth: parent.height
+                        implicitHeight: parent.height
+                        onClicked: {
+                            playingSong.previous()
+                        }
+                        contentItem: Text {
+                            font.family: "Material Symbols Rounded"
+                            font.pixelSize: 24
+                            text: "\ue045"
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                            color: primaryTextColor
+                        }
+                        background: Rectangle {
+                            color: "transparent"
+                            implicitWidth: parent.width
+                            implicitHeight: parent.height
+                            radius: parent.height / 2
+                        }
+                    }
+
+                    // Pause/play button
                     RoundButton {
                         implicitWidth: parent.height
                         implicitHeight: parent.height
@@ -101,6 +126,29 @@ Rectangle {
                         }
                         background: Rectangle {
                             color: "white"
+                            implicitWidth: parent.width
+                            implicitHeight: parent.height
+                            radius: parent.height / 2
+                        }
+                    }
+
+                    // Next button
+                    RoundButton {
+                        implicitWidth: parent.height
+                        implicitHeight: parent.height
+                        onClicked: {
+                            playingSong.next()
+                        }
+                        contentItem: Text {
+                            font.family: "Material Symbols Rounded"
+                            font.pixelSize: 24
+                            text: "\ue044"
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                            color: primaryTextColor
+                        }
+                        background: Rectangle {
+                            color: "transparent"
                             implicitWidth: parent.width
                             implicitHeight: parent.height
                             radius: parent.height / 2

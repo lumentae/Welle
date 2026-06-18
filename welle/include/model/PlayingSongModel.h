@@ -40,6 +40,8 @@ namespace welle::model {
 
         Q_INVOKABLE static void setPosition(float position);
         Q_INVOKABLE void playOrPause();
+        Q_INVOKABLE static void next();
+        Q_INVOKABLE static void previous();
 
         signals:
             void songChanged();
