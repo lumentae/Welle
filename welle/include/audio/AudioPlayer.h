@@ -6,6 +6,12 @@
 namespace welle::audio {
     class AudioPlayer {
     public:
+        enum class RepeatMode {
+            Disabled,
+            Enabled,
+            One
+        };
+
         AudioPlayer() = default;
         static AudioPlayer& getInstance() {
             static AudioPlayer instance;
@@ -16,10 +22,12 @@ namespace welle::audio {
         void setAfterPlayCallback(const std::function<void()>& callback) { m_AfterPlayCallback = callback; }
         void play(const medialib::types::Song &song, bool resume = false);
         void stop();
+        void setRepeatMode(RepeatMode mode);
 
         medialib::types::Song getCurrentlyPlayingSong() { return m_CurrentlyPlayingSong; }
         float position() const;
         void seek(float position) const;
+        RepeatMode repeatMode() const;
 
         const ma_sound* sound() const { return m_Sound.get(); }
 
@@ -35,5 +43,6 @@ namespace welle::audio {
         ma_engine_config m_EngineConfig{};
         std::function<void(const medialib::types::Song &)> m_DownloadSong{};
         std::function<void()> m_AfterPlayCallback{};
+        RepeatMode m_RepeatMode = RepeatMode::Disabled;
     };
 }

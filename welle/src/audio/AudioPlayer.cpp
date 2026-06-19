@@ -73,7 +73,13 @@ namespace welle::audio {
             throw std::runtime_error("ma_sound_start failed");
 
         ma_sound_set_end_callback(m_Sound.get(), [](void *pUserData, ma_sound *pSound) {
-            static_cast<AudioPlayer*>(pUserData)->m_StopRequested.exchange(true);
+            auto* audioPlayer = static_cast<AudioPlayer*>(pUserData);
+            if (audioPlayer->m_RepeatMode == RepeatMode::One) {
+                ma_sound_seek_to_second(pSound, 0);
+                ma_sound_start(pSound);
+                return;
+            }
+            audioPlayer->m_StopRequested.exchange(true);
             medialib::Queue::getInstance().next();
         }, this);
 
@@ -87,6 +93,10 @@ namespace welle::audio {
         ma_sound_stop(m_Sound.get());
     }
 
+    void AudioPlayer::setRepeatMode(const RepeatMode mode) {
+        m_RepeatMode = mode;
+    }
+
     float AudioPlayer::position() const {
         float position = 0;
         ma_sound_get_cursor_in_seconds(m_Sound.get(), &position);
@@ -95,5 +105,9 @@ namespace welle::audio {
 
     void AudioPlayer::seek(const float position) const {
         ma_sound_seek_to_second(m_Sound.get(), position);
+    }
+
+    AudioPlayer::RepeatMode AudioPlayer::repeatMode() const {
+        return m_RepeatMode;
     }
 }

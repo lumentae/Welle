@@ -87,6 +87,29 @@ Rectangle {
                         Layout.fillHeight: true
                     }
 
+                    // Shuffle button
+                    RoundButton {
+                        implicitWidth: parent.height
+                        implicitHeight: parent.height
+                        onClicked: {
+                            playingSong.shuffle()
+                        }
+                        contentItem: Text {
+                            font.family: "Material Symbols Rounded"
+                            font.pixelSize: 24
+                            text: "\ue043"
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                            color: primaryTextColor
+                        }
+                        background: Rectangle {
+                            color: "transparent"
+                            implicitWidth: parent.width
+                            implicitHeight: parent.height
+                            radius: parent.height / 2
+                        }
+                    }
+
                     // Previous button
                     RoundButton {
                         implicitWidth: parent.height
@@ -143,6 +166,33 @@ Rectangle {
                             font.family: "Material Symbols Rounded"
                             font.pixelSize: 24
                             text: "\ue044"
+                            horizontalAlignment: Text.AlignHCenter
+                            verticalAlignment: Text.AlignVCenter
+                            color: primaryTextColor
+                        }
+                        background: Rectangle {
+                            color: "transparent"
+                            implicitWidth: parent.width
+                            implicitHeight: parent.height
+                            radius: parent.height / 2
+                        }
+                    }
+
+                    // Repeat button
+                    RoundButton {
+                        implicitWidth: parent.height
+                        implicitHeight: parent.height
+                        onClicked: {
+                            playingSong.repeat()
+                        }
+                        contentItem: Text {
+                            font.family: "Material Symbols Rounded"
+                            font.pixelSize: 24
+                            text: playingSong.repeatMode === "enabled"
+                                ? "\ue9d6"
+                                : playingSong.repeatMode === "one"
+                                    ? "\ue9d7"
+                                    : "\ue040"
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                             color: primaryTextColor

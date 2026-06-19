@@ -18,6 +18,7 @@ namespace welle::medialib {
         void previous();
         void clear();
         void shuffle();
+        void fromStart();
 
         void setOnSongChanged(const std::function<void(const types::Song&)> &onSongChanged) { m_OnSongChanged = onSongChanged; }
 

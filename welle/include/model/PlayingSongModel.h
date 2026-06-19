@@ -23,6 +23,7 @@ namespace welle::model {
         Q_PROPERTY(int playCount READ playCount NOTIFY songChanged)
         Q_PROPERTY(float position READ position NOTIFY positionChanged)
         Q_PROPERTY(bool paused READ paused NOTIFY pausedChanged)
+        Q_PROPERTY(QString repeatMode READ repeatMode NOTIFY repeatChanged)
 
         static QString title();
         static QString artist();
@@ -35,18 +36,22 @@ namespace welle::model {
         static int playCount();
         static float position();
         static bool paused();
+        static QString repeatMode();
 
-        void update() { emit songChanged(); emit positionChanged(); emit pausedChanged(); }
+        void update() { emit songChanged(); emit positionChanged(); emit pausedChanged(); emit repeatChanged(); }
 
         Q_INVOKABLE static void setPosition(float position);
         Q_INVOKABLE void playOrPause();
         Q_INVOKABLE static void next();
         Q_INVOKABLE static void previous();
+        Q_INVOKABLE static void shuffle();
+        Q_INVOKABLE void repeat();
 
         signals:
             void songChanged();
             void positionChanged();
             void pausedChanged();
+            void repeatChanged();
 
         private:
             QTimer* m_PollTimer;

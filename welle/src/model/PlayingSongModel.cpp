@@ -49,6 +49,17 @@ namespace welle::model {
         return !ma_sound_is_playing(audio::AudioPlayer::getInstance().sound());
     }
 
+    QString PlayingSongModel::repeatMode() {
+        switch (audio::AudioPlayer::getInstance().repeatMode()) {
+        case audio::AudioPlayer::RepeatMode::Enabled:
+            return "enabled";
+        case audio::AudioPlayer::RepeatMode::One:
+            return "one";
+        default:
+            return "disabled";
+        }
+    }
+
     void PlayingSongModel::setPosition(const float position) {
         audio::AudioPlayer::getInstance().seek(position);
     }
@@ -67,6 +78,25 @@ namespace welle::model {
 
     void PlayingSongModel::previous() {
         medialib::Queue::getInstance().previous();
+    }
+
+    void PlayingSongModel::shuffle() {
+        medialib::Queue::getInstance().shuffle();
+    }
+
+    void PlayingSongModel::repeat() {
+        switch (auto& audioPlayer = audio::AudioPlayer::getInstance(); audioPlayer.repeatMode()) {
+            case audio::AudioPlayer::RepeatMode::Disabled:
+                audioPlayer.setRepeatMode(audio::AudioPlayer::RepeatMode::Enabled);
+                break;
+            case audio::AudioPlayer::RepeatMode::Enabled:
+                audioPlayer.setRepeatMode(audio::AudioPlayer::RepeatMode::One);
+                break;
+            case audio::AudioPlayer::RepeatMode::One:
+                audioPlayer.setRepeatMode(audio::AudioPlayer::RepeatMode::Disabled);
+                break;
+        }
+        emit repeatChanged();
     }
 
     QUrl PlayingSongModel::coverArt() {

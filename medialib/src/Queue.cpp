@@ -31,6 +31,11 @@ namespace welle::medialib {
         std::ranges::shuffle(m_Queue, std::default_random_engine{});
     }
 
+    void Queue::fromStart() {
+        m_CurrentIndex = 0;
+        m_OnSongChanged(m_Queue.at(0));
+    }
+
     const types::Song* Queue::currentSong() const {
         if (m_CurrentIndex < 0 || m_CurrentIndex >= m_Queue.size()) return nullptr;
         return &m_Queue.at(m_CurrentIndex);
