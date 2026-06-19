@@ -71,6 +71,8 @@ namespace welle::model {
         m_Songs.append(songs);
         endInsertRows();
         m_Offset += songs.size();
+        
+        medialib::Queue::getInstance().addToQueue(utility::Qt::qListToVector(songs));
 
         m_IsLoading = false;
         emit isLoadingChanged();
