@@ -1,10 +1,5 @@
-set(ICON_NAMES
-        pause
-        play_arrow
-)
-list(JOIN ICON_NAMES "," ICON_NAMES_STRING)
 file(
         DOWNLOAD
-        https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded:opsz,wght,FILL,GRAD@24,400,0,0&icon_names=${ICON_NAMES_STRING}
+        https://github.com/google/material-design-icons/raw/refs/heads/master/variablefont/MaterialSymbolsRounded%5BFILL,GRAD,opsz,wght%5D.ttf
         ${CMAKE_CURRENT_SOURCE_DIR}/MaterialSymbols.ttf
 )

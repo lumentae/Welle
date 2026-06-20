@@ -77,13 +77,11 @@ namespace welle::medialib::client {
 
     std::vector<types::Artist> OpenSubsonicClient::getArtists(const OpenSubsonicSearchParameters searchParameters) {
         const nlohmann::json response = search3(searchParameters);
-
         return response["subsonic-response"]["searchResult3"]["artist"].get<std::vector<types::Artist>>();
     }
 
     std::vector<types::Album> OpenSubsonicClient::getAlbums(const OpenSubsonicSearchParameters searchParameters) {
         const nlohmann::json response = search3(searchParameters);
-
         return response["subsonic-response"]["searchResult3"]["album"].get<std::vector<types::Album>>();
     }
 
