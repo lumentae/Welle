@@ -65,13 +65,20 @@ namespace welle::medialib::client {
         std::cout << response.dump(4) << std::endl;
     }
 
-    std::vector<types::Song> OpenSubsonicClient::getSongs(const OpenSubsonicSearchParameters searchParameters) {
+    std::vector<types::Song> OpenSubsonicClient::getSongs(OpenSubsonicSearchParameters searchParameters) {
+        searchParameters.albumCount = 0;
+        searchParameters.artistCount = 0;
         const nlohmann::json response = search3(searchParameters);
-        const auto songs = response["subsonic-response"]["searchResult3"]["song"].get<std::vector<types::Song>>();
+        std::cout << response.dump(4) << std::endl;
+        auto songsJson = response["subsonic-response"]["searchResult3"];
+        if (!songsJson.contains("song"))
+            return {};
+
+        songsJson = songsJson["song"];
+        const auto songs = songsJson.get<std::vector<types::Song>>();
         for (auto& song : songs) {
             downloadCoverArt(song);
         }
-
         return songs;
     }
 
