@@ -49,13 +49,13 @@ namespace welle::model {
         bool hasMore() const { return m_HasMore; }
         bool isLoading() const { return m_IsLoading; }
         static QString currentTitle() {
-            return QString::fromStdString(audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().title);
+            return QString::fromStdString(medialib::audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().title);
         }
         static QString currentArtist() {
-            return QString::fromStdString(audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().artist);
+            return QString::fromStdString(medialib::audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().artist);
         }
         static QString currentCoverArt() {
-            return QString::fromStdString(audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().coverArt);
+            return QString::fromStdString(medialib::audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().coverArt);
         }
 
         signals:

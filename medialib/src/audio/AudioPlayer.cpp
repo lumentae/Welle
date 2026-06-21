@@ -1,12 +1,10 @@
-#include <iostream>
-#include <QDir>
 #include <thread>
 #include <audio/AudioPlayer.h>
 
 #include "Queue.h"
 #include "extras/decoders/libopus/miniaudio_libopus.h"
 
-namespace welle::audio {
+namespace welle::medialib::audio {
     void AudioPlayer::initialize(const std::function<void(const medialib::types::Song&)>& downloadSong) {
         ma_decoding_backend_vtable* pCustomBackendVTables[] =
         {

@@ -19,7 +19,7 @@ int main(int argc, char* argv[]) {
     medialib::client::OpenSubsonicClient client(argv[1], argv[2], argv[3]);
     client.ping();
 
-    audio::AudioPlayer::getInstance().initialize([&](const medialib::types::Song& song) {
+    medialib::audio::AudioPlayer::getInstance().initialize([&](const medialib::types::Song& song) {
         std::cout << "Downloading " << song.title << "..." << std::endl;
         client.downloadSong(song);
     });
@@ -40,7 +40,7 @@ int main(int argc, char* argv[]) {
 
     medialib::Queue::getInstance().setOnSongChanged([&](const medialib::types::Song& song) {
         std::cout << "Playing " << song.title << "..." << std::endl;
-        audio::AudioPlayer::getInstance().play(song, false);
+        medialib::audio::AudioPlayer::getInstance().play(song, false);
         playingSongModel->update();
     });
 
@@ -52,7 +52,7 @@ int main(int argc, char* argv[]) {
         songListModel->appendSongs(utility::Qt::vectorToQList(newSongs));
     });
 
-    audio::AudioPlayer::getInstance().setAfterPlayCallback([&] {
+    medialib::audio::AudioPlayer::getInstance().setAfterPlayCallback([&] {
         playingSongModel->update();
     });
 

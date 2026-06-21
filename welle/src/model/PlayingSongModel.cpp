@@ -11,7 +11,7 @@ namespace welle::model {
     PlayingSongModel::PlayingSongModel(QObject *parent) : QObject(parent) {
         m_PollTimer = new QTimer(this);
         connect(m_PollTimer, &QTimer::timeout, this, [this] {
-            auto& audioPlayer = audio::AudioPlayer::getInstance();
+            auto& audioPlayer = medialib::audio::AudioPlayer::getInstance();
             if (ma_sound_is_playing(audioPlayer.sound())) {
                 emit positionChanged();
             }
@@ -22,38 +22,38 @@ namespace welle::model {
     }
 
     QString PlayingSongModel::title() {
-        return QString::fromStdString(audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().title);
+        return QString::fromStdString(medialib::audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().title);
     }
 
     QString PlayingSongModel::artist() {
-        return QString::fromStdString(audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().artist);
+        return QString::fromStdString(medialib::audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().artist);
     }
 
     QString PlayingSongModel::album() {
-        return QString::fromStdString(audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().album);
+        return QString::fromStdString(medialib::audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().album);
     }
 
     QString PlayingSongModel::albumId() {
-        return QString::fromStdString(audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().albumId);
+        return QString::fromStdString(medialib::audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().albumId);
     }
 
     int PlayingSongModel::duration() {
-        return audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().duration;
+        return medialib::audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().duration;
     }
 
     float PlayingSongModel::position() {
-        return audio::AudioPlayer::getInstance().position();
+        return medialib::audio::AudioPlayer::getInstance().position();
     }
 
     bool PlayingSongModel::paused() {
-        return !ma_sound_is_playing(audio::AudioPlayer::getInstance().sound());
+        return !ma_sound_is_playing(medialib::audio::AudioPlayer::getInstance().sound());
     }
 
     QString PlayingSongModel::repeatMode() {
-        switch (audio::AudioPlayer::getInstance().repeatMode()) {
-        case audio::AudioPlayer::RepeatMode::Enabled:
+        switch (medialib::audio::AudioPlayer::getInstance().repeatMode()) {
+        case medialib::audio::AudioPlayer::RepeatMode::Enabled:
             return "enabled";
-        case audio::AudioPlayer::RepeatMode::One:
+        case medialib::audio::AudioPlayer::RepeatMode::One:
             return "one";
         default:
             return "disabled";
@@ -61,11 +61,11 @@ namespace welle::model {
     }
 
     void PlayingSongModel::setPosition(const float position) {
-        audio::AudioPlayer::getInstance().seek(position);
+        medialib::audio::AudioPlayer::getInstance().seek(position);
     }
 
     void PlayingSongModel::playOrPause() {
-        if (auto& audioPlayer = audio::AudioPlayer::getInstance(); ma_sound_is_playing(audioPlayer.sound()))
+        if (auto& audioPlayer = medialib::audio::AudioPlayer::getInstance(); ma_sound_is_playing(audioPlayer.sound()))
             audioPlayer.stop();
         else if (!audioPlayer.getCurrentlyPlayingSong().id.empty())
             audioPlayer.play(audioPlayer.getCurrentlyPlayingSong(), true);
@@ -85,34 +85,34 @@ namespace welle::model {
     }
 
     void PlayingSongModel::repeat() {
-        switch (auto& audioPlayer = audio::AudioPlayer::getInstance(); audioPlayer.repeatMode()) {
-            case audio::AudioPlayer::RepeatMode::Disabled:
-                audioPlayer.setRepeatMode(audio::AudioPlayer::RepeatMode::Enabled);
+        switch (auto& audioPlayer = medialib::audio::AudioPlayer::getInstance(); audioPlayer.repeatMode()) {
+            case medialib::audio::AudioPlayer::RepeatMode::Disabled:
+                audioPlayer.setRepeatMode(medialib::audio::AudioPlayer::RepeatMode::Enabled);
                 break;
-            case audio::AudioPlayer::RepeatMode::Enabled:
-                audioPlayer.setRepeatMode(audio::AudioPlayer::RepeatMode::One);
+            case medialib::audio::AudioPlayer::RepeatMode::Enabled:
+                audioPlayer.setRepeatMode(medialib::audio::AudioPlayer::RepeatMode::One);
                 break;
-            case audio::AudioPlayer::RepeatMode::One:
-                audioPlayer.setRepeatMode(audio::AudioPlayer::RepeatMode::Disabled);
+            case medialib::audio::AudioPlayer::RepeatMode::One:
+                audioPlayer.setRepeatMode(medialib::audio::AudioPlayer::RepeatMode::Disabled);
                 break;
         }
         emit repeatChanged();
     }
 
     QUrl PlayingSongModel::coverArt() {
-        const QString path = QDir::current().absoluteFilePath("cache/" + QString::fromStdString(audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().coverArt));
+        const QString path = QDir::current().absoluteFilePath("cache/" + QString::fromStdString(medialib::audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().coverArt));
         return QUrl::fromLocalFile(path);
     }
 
     QString PlayingSongModel::path() {
-        return QString::fromStdString(audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().path);
+        return QString::fromStdString(medialib::audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().path);
     }
 
     QString PlayingSongModel::suffix() {
-        return QString::fromStdString(audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().suffix);
+        return QString::fromStdString(medialib::audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().suffix);
     }
 
     int PlayingSongModel::playCount() {
-        return audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().playCount;
+        return medialib::audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().playCount;
     }
 }

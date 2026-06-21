@@ -3,7 +3,7 @@
 #include "types/Song.h"
 #include <miniaudio.h>
 
-namespace welle::audio {
+namespace welle::medialib::audio {
     class AudioPlayer {
     public:
         enum class RepeatMode {

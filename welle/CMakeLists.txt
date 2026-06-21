@@ -10,8 +10,6 @@ qt_standard_project_setup(REQUIRES 6.8)
 qt_add_executable(Welle
         src/main.cpp
         include/utility/Qt.h
-        src/audio/AudioPlayer.cpp
-        include/audio/AudioPlayer.h
         src/model/PlayingSongModel.cpp
         include/model/PlayingSongModel.h
 )
@@ -41,8 +39,6 @@ target_link_libraries(Welle PRIVATE
         Qt6::Qml
         Qt6::Concurrent
         medialib
-        miniaudio
-        miniaudio_libopus
 )
 target_include_directories(Welle PUBLIC include include/model)
 
