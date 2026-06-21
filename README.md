@@ -17,6 +17,6 @@ I really love listening to music any chance I get, but I often don't have intern
 - [ ] Add a queue list on the right side
 - [ ] Lyrics
 - [ ] Add a search bar
-- [ ] MPRIS
+- [x] MPRIS
 - [ ] Android support
 - [ ] TUI
