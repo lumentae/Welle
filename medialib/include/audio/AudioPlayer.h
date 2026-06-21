@@ -18,13 +18,15 @@ namespace welle::medialib::audio {
             return instance;
         }
 
-        void initialize(const std::function<void(const medialib::types::Song&)>& downloadSong);
+        void initialize(const std::function<void(const types::Song&)>& downloadSong);
         void setAfterPlayCallback(const std::function<void()>& callback) { m_AfterPlayCallback = callback; }
-        void play(const medialib::types::Song &song, bool resume = false);
-        void stop();
+        void play(const types::Song &song, bool resume = false);
+        void play() { play(m_CurrentlyPlayingSong, true); }
+        void pause();
         void setRepeatMode(RepeatMode mode);
+        void destroy();
 
-        medialib::types::Song getCurrentlyPlayingSong() { return m_CurrentlyPlayingSong; }
+        types::Song getCurrentlyPlayingSong() { return m_CurrentlyPlayingSong; }
         float position() const;
         void seek(float position) const;
         RepeatMode repeatMode() const;

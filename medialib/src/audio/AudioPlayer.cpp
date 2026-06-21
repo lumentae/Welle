@@ -2,10 +2,11 @@
 #include <audio/AudioPlayer.h>
 
 #include "Queue.h"
+#include "audio/MprisServer.h"
 #include "extras/decoders/libopus/miniaudio_libopus.h"
 
 namespace welle::medialib::audio {
-    void AudioPlayer::initialize(const std::function<void(const medialib::types::Song&)>& downloadSong) {
+    void AudioPlayer::initialize(const std::function<void(const types::Song&)>& downloadSong) {
         ma_decoding_backend_vtable* pCustomBackendVTables[] =
         {
             ma_decoding_backend_libopus,
@@ -33,23 +34,19 @@ namespace welle::medialib::audio {
         m_DownloadSong = downloadSong;
     }
 
-    void AudioPlayer::play(const medialib::types::Song& song, const bool resume) {
+    void AudioPlayer::play(const types::Song& song, const bool resume) {
         const auto soundPath = std::filesystem::path{"songs/" + song.id + "." + song.suffix};
         if (!std::filesystem::exists(soundPath))
             m_DownloadSong(song);
+
+        MprisServer::fromSong(song);
 
         if (resume && m_Sound) {
             ma_sound_start(m_Sound.get());
             return;
         }
-        stop();
-
-        if (m_CurrentlyPlayingSong.id != song.id) {
-            auto oldSound = std::move(m_Sound);
-            std::thread([oldSound = std::move(oldSound)]() mutable {
-                ma_sound_uninit(oldSound.get());
-            }).detach();
-        }
+        pause();
+        destroy();
 
         m_Sound = std::make_unique<ma_sound>();
         m_CurrentlyPlayingSong = song;
@@ -78,13 +75,13 @@ namespace welle::medialib::audio {
                 return;
             }
             audioPlayer->m_StopRequested.exchange(true);
-            medialib::Queue::getInstance().next();
+            Queue::getInstance().next();
         }, this);
 
         m_AfterPlayCallback();
     }
 
-    void AudioPlayer::stop() {
+    void AudioPlayer::pause() {
         m_StopRequested.exchange(false);
         if (!m_Sound) return;
         if (!ma_sound_is_playing(m_Sound.get())) return;
@@ -93,6 +90,13 @@ namespace welle::medialib::audio {
 
     void AudioPlayer::setRepeatMode(const RepeatMode mode) {
         m_RepeatMode = mode;
+    }
+
+    void AudioPlayer::destroy() {
+        auto oldSound = std::move(m_Sound);
+        std::thread([oldSound = std::move(oldSound)]() mutable {
+            ma_sound_uninit(oldSound.get());
+        }).detach();
     }
 
     float AudioPlayer::position() const {

@@ -6,6 +6,7 @@
 #include "PlayingSongModel.h"
 #include "Queue.h"
 #include "audio/AudioPlayer.h"
+#include "audio/MprisServer.h"
 #include "client/OpenSubsonicClient.h"
 #include "model/SongListModel.h"
 #include "utility/Qt.h"
@@ -55,6 +56,13 @@ int main(int argc, char* argv[]) {
     medialib::audio::AudioPlayer::getInstance().setAfterPlayCallback([&] {
         playingSongModel->update();
     });
+
+    medialib::audio::MprisServer::start();
+
+    auto onExit = [] {
+        medialib::audio::MprisServer::stop();
+    };
+    std::atexit(onExit);
 
     return QGuiApplication::exec();
 }

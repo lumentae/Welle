@@ -5,6 +5,7 @@
 
 #include "Queue.h"
 #include "audio/AudioPlayer.h"
+#include "audio/MprisServer.h"
 #include "types/Song.h"
 
 namespace welle::model {
@@ -14,9 +15,10 @@ namespace welle::model {
             auto& audioPlayer = medialib::audio::AudioPlayer::getInstance();
             if (ma_sound_is_playing(audioPlayer.sound())) {
                 emit positionChanged();
+                medialib::audio::MprisServer::update(audioPlayer.position(), false);
             }
             if (audioPlayer.stopRequested())
-                audioPlayer.stop();
+                audioPlayer.pause();
         });
         m_PollTimer->start(100);
     }
@@ -61,14 +63,16 @@ namespace welle::model {
     }
 
     void PlayingSongModel::setPosition(const float position) {
-        medialib::audio::AudioPlayer::getInstance().seek(position);
+        const auto& audioPlayer = medialib::audio::AudioPlayer::getInstance();
+        audioPlayer.seek(position);
+        medialib::audio::MprisServer::update(audioPlayer.position(), true);
     }
 
     void PlayingSongModel::playOrPause() {
         if (auto& audioPlayer = medialib::audio::AudioPlayer::getInstance(); ma_sound_is_playing(audioPlayer.sound()))
-            audioPlayer.stop();
+            audioPlayer.pause();
         else if (!audioPlayer.getCurrentlyPlayingSong().id.empty())
-            audioPlayer.play(audioPlayer.getCurrentlyPlayingSong(), true);
+            audioPlayer.play();
         emit pausedChanged();
     }
 
