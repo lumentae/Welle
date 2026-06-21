@@ -7,6 +7,7 @@
 
 namespace welle::medialib::audio {
     std::unique_ptr<mpris::Server> MprisServer::m_Server;
+    std::function<void()> MprisServer::m_PlaybackStatusChanged;
     void MprisServer::start() {
         auto server = mpris::Server::make("welle");
         if (!server) {
@@ -23,24 +24,24 @@ namespace welle::medialib::audio {
         m_Server->on_previous([&] { queue.previous(); });
         m_Server->on_pause([&] {
             audioPlayer.pause();
-            m_Server->set_playback_status(mpris::PlaybackStatus::Paused);
+            setPlaybackStatus(mpris::PlaybackStatus::Paused);
         });
         m_Server->on_play([&] {
             audioPlayer.play();
-            m_Server->set_playback_status(mpris::PlaybackStatus::Playing);
+            setPlaybackStatus(mpris::PlaybackStatus::Playing);
         });
         m_Server->on_play_pause([&] {
             if (ma_sound_is_playing(audioPlayer.sound())) {
                 audioPlayer.pause();
-                m_Server->set_playback_status(mpris::PlaybackStatus::Paused);
+                setPlaybackStatus(mpris::PlaybackStatus::Paused);
             } else {
                 audioPlayer.play();
-                m_Server->set_playback_status(mpris::PlaybackStatus::Playing);
+                setPlaybackStatus(mpris::PlaybackStatus::Playing);
             }
         });
         m_Server->on_stop([&] {
             audioPlayer.destroy();
-            m_Server->set_playback_status(mpris::PlaybackStatus::Stopped);
+            setPlaybackStatus(mpris::PlaybackStatus::Stopped);
         });
         m_Server->on_seek([&](const int64_t position) {
             audioPlayer.seek(audioPlayer.position() + position / 1e6);
@@ -73,7 +74,7 @@ namespace welle::medialib::audio {
     }
 
     void MprisServer::stop() {
-        m_Server->set_playback_status(mpris::PlaybackStatus::Stopped);
+        setPlaybackStatus(mpris::PlaybackStatus::Stopped);
     }
 
     void MprisServer::fromSong(const types::Song& song) {
@@ -92,7 +93,7 @@ namespace welle::medialib::audio {
             { mpris::Field::TrackId, sdbus::Variant(sdbus::ObjectPath("/org/welle/track/" + song.id)) },
             { mpris::Field::UseCount, sdbus::Variant(song.playCount) },
         });
-        m_Server->set_playback_status(mpris::PlaybackStatus::Playing);
+        setPlaybackStatus(mpris::PlaybackStatus::Playing);
         m_Server->set_rate(1.0);
         m_Server->set_position(0);
     }
@@ -102,5 +103,11 @@ namespace welle::medialib::audio {
         m_Server->set_position(newPos);
         if (seeked)
             m_Server->send_seeked_signal(newPos);
+    }
+
+    void MprisServer::setPlaybackStatus(const mpris::PlaybackStatus status) {
+        m_Server->set_playback_status(status);
+        if (m_PlaybackStatusChanged)
+            m_PlaybackStatusChanged();
     }
 }

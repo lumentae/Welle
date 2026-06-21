@@ -21,6 +21,9 @@ namespace welle::model {
                 audioPlayer.pause();
         });
         m_PollTimer->start(100);
+        medialib::audio::MprisServer::setPlaybackStatusChanged([&] {
+            emit pausedChanged();
+        });
     }
 
     QString PlayingSongModel::title() {
