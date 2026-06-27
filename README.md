@@ -21,6 +21,7 @@ I really love listening to music any chance I get, but I often don't have intern
 - [ ] TUI
 - [ ] Save password more securely
 - [ ] Context menu
+- [ ] Volume slider
 
 ### Completed
 - [x] MPRIS

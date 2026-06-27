@@ -27,12 +27,10 @@ namespace welle::medialib::audio {
         void destroy();
 
         types::Song getCurrentlyPlayingSong() { return m_CurrentlyPlayingSong; }
-        float position() const;
+        [[nodiscard]] float position() const;
         void seek(float position) const;
-        RepeatMode repeatMode() const;
-
-        const ma_sound* sound() const { return m_Sound.get(); }
-
+        [[nodiscard]] RepeatMode repeatMode() const;
+        [[nodiscard]] ma_sound* sound() const { return m_Sound.get(); }
         [[nodiscard]] bool stopRequested() const { return m_StopRequested; }
 
     private:

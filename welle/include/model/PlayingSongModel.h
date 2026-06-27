@@ -46,6 +46,7 @@ namespace welle::model {
         Q_INVOKABLE static void previous();
         Q_INVOKABLE static void shuffle();
         Q_INVOKABLE void repeat();
+        Q_INVOKABLE static void setVolume(float volume);
 
         signals:
             void songChanged();

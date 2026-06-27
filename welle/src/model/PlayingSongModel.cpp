@@ -106,6 +106,10 @@ namespace welle::model {
         emit repeatChanged();
     }
 
+    void PlayingSongModel::setVolume(const float volume) {
+        ma_sound_set_volume(medialib::audio::AudioPlayer::getInstance().sound(), volume / 100.0f);
+    }
+
     QUrl PlayingSongModel::coverArt() {
         const QString path = QDir::current().absoluteFilePath("cache/" + QString::fromStdString(medialib::audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().coverArt));
         return QUrl::fromLocalFile(path);

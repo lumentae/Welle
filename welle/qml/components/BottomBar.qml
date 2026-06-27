@@ -305,9 +305,21 @@ Rectangle {
                 spacing: 8
 
                 Text {
-                    text: "Right"
+                    text: Math.round(volumeSlider.value) + "%"
                     color: primaryTextColor
-                    anchors.verticalCenter: parent.verticalCenter
+                    font.pixelSize: Qt.application.font.pixelSize
+                    horizontalAlignment: Text.AlignRight
+                }
+
+                Slider {
+                    id: volumeSlider
+                    from: 0
+                    value: 100
+                    to: 100
+
+                    onValueChanged: {
+                        playingSong.setVolume(volumeSlider.value)
+                    }
                 }
             }
         }
