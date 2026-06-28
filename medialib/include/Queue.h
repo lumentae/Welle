@@ -13,7 +13,7 @@ namespace welle::medialib {
         }
 
         void playNow(const std::vector<types::Song> &songs, int startIndex = 0);
-        void addToQueue(std::vector<types::Song> songs);
+        void addToQueue(std::vector<types::Song> songs, bool atCurrentIndex = false);
         void next();
         void previous();
         void clear();

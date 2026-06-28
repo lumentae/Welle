@@ -7,6 +7,7 @@
 #include "audio/AudioPlayer.h"
 #include "audio/MprisServer.h"
 #include "types/Song.h"
+#include "utility/Qt.h"
 
 namespace welle::model {
     PlayingSongModel::PlayingSongModel(QObject *parent) : QObject(parent) {

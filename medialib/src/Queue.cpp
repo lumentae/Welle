@@ -8,8 +8,9 @@ namespace welle::medialib {
         playIndex(startIndex);
     }
 
-    void Queue::addToQueue(std::vector<types::Song> songs) {
-        m_Queue.insert(m_Queue.end(), songs.begin(), songs.end());
+    void Queue::addToQueue(std::vector<types::Song> songs, const bool atCurrentIndex) {
+        const auto begin = atCurrentIndex ? m_Queue.begin() + m_CurrentIndex + 1 : m_Queue.end();
+        m_Queue.insert(begin, songs.begin(), songs.end());
     }
 
     void Queue::next() {

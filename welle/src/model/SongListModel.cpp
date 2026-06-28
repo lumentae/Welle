@@ -66,6 +66,10 @@ namespace welle::model {
         medialib::Queue::getInstance().playNow(utility::Qt::qListToVector(m_Songs), index - 1);
     }
 
+    void SongListModel::addToQueue(const int index) {
+        medialib::Queue::getInstance().addToQueue({m_Songs[index]}, true);
+    }
+
     void SongListModel::appendSongs(const QList<medialib::types::Song> &songs) {
         beginInsertRows(QModelIndex(), m_Songs.size(), m_Songs.size() + songs.size() - 1);
         m_Songs.append(songs);

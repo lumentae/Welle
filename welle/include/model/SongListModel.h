@@ -40,6 +40,7 @@ namespace welle::model {
         Q_INVOKABLE void setFetchNextPageCallback(const std::function<void(uint32_t, uint32_t)> &fetchNextPageCallback);
         Q_INVOKABLE void fetchNextPage();
         Q_INVOKABLE void play(int index) const;
+        Q_INVOKABLE void addToQueue(int index);
 
         Q_PROPERTY(bool hasMore READ hasMore NOTIFY hasMoreChanged)
         Q_PROPERTY(bool isLoading READ isLoading NOTIFY isLoadingChanged)

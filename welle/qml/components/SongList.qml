@@ -67,8 +67,14 @@ ListView {
             id: mouseArea
             anchors.fill: parent
             hoverEnabled: true
-            onClicked: {
-                songListModel.play(songIndex)
+            acceptedButtons: Qt.LeftButton | Qt.RightButton
+            onClicked: (mouse) => {
+                if (mouse.button === Qt.RightButton) {
+                    contextMenu.songIndex = songIndex
+                    contextMenu.popup()
+                } else {
+                    songListModel.play(songIndex)
+                }
             }
         }
     }
@@ -89,5 +95,24 @@ ListView {
         }
 
         Component.onCompleted: songListModel.fetchNextPage()
+    }
+
+    Menu {
+        id: contextMenu
+        property int songIndex: -1
+
+        MenuItem {
+            text: "Play"
+            onTriggered: {
+                songListModel.play(contextMenu.songIndex)
+            }
+        }
+
+        MenuItem {
+            text: "Next"
+            onTriggered: {
+                songListModel.addToQueue(contextMenu.songIndex - 1)
+            }
+        }
     }
 }

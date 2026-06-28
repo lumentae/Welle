@@ -20,8 +20,8 @@ I really love listening to music any chance I get, but I often don't have intern
 - [ ] Android support
 - [ ] TUI
 - [ ] Save password more securely
-- [ ] Context menu
-- [ ] Volume slider
 
 ### Completed
 - [x] MPRIS
+- [x] Volume slider
+- [x] Context menu
