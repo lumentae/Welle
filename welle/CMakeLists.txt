@@ -10,8 +10,6 @@ qt_standard_project_setup(REQUIRES 6.8)
 qt_add_executable(Welle
         src/main.cpp
         include/utility/Qt.h
-        src/model/PlayingSongModel.cpp
-        include/model/PlayingSongModel.h
 )
 
 qt_add_qml_module(Welle
@@ -24,10 +22,15 @@ qt_add_qml_module(Welle
             qml/components/Sidebar.qml
             qml/components/SidebarEntry.qml
             qml/components/Content.qml
+            qml/components/QueueList.qml
             qml/pages/Songs.qml
         SOURCES
-            src/model/SongListModel.cpp
+            include/model/PlayingSongModel.h
+            include/model/QueueListModel.h
             include/model/SongListModel.h
+            src/model/PlayingSongModel.cpp
+            src/model/QueueListModel.cpp
+            src/model/SongListModel.cpp
         RESOURCES
             external/MaterialSymbols/MaterialSymbols.ttf
 )

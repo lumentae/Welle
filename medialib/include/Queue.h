@@ -20,6 +20,8 @@ namespace welle::medialib {
         void shuffle();
         void fromStart();
 
+        std::vector<types::Song> getQueue() { return m_Queue; }
+
         void setOnSongChanged(const std::function<void(const types::Song&)> &onSongChanged) { m_OnSongChanged = onSongChanged; }
 
         [[nodiscard]] bool hasNext() const { return m_CurrentIndex < m_Queue.size() - 1; }

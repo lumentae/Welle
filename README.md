@@ -14,7 +14,6 @@ I really love listening to music any chance I get, but I often don't have intern
     - [ ] Playlists
 - [ ] Offload downloads to a separate thread
 - [ ] Cache playlists and tracks in a database
-- [ ] Add a queue list on the right side
 - [ ] Lyrics
 - [ ] Add a search bar
 - [ ] Android support
@@ -25,3 +24,4 @@ I really love listening to music any chance I get, but I often don't have intern
 - [x] MPRIS
 - [x] Volume slider
 - [x] Context menu
+- [x] Add a queue list on the right side

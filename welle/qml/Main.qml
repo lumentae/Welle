@@ -24,9 +24,15 @@ ApplicationWindow {
                 Layout.preferredWidth: 200
                 Layout.fillHeight: true
             }
+
             Content {
                 id: mainContent
                 Layout.fillWidth: true
+                Layout.fillHeight: true
+            }
+
+            QueueList {
+                Layout.preferredWidth: 400
                 Layout.fillHeight: true
             }
         }

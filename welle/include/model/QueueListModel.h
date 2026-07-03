@@ -3,16 +3,14 @@
 #include <QAbstractItemModel>
 #include <QAbstractListModel>
 #include <QList>
-#include <qqmlapplicationengine.h>
 #include <QtQml/qqmlregistration.h>
 
-#include "QueueListModel.h"
 #include "audio/AudioPlayer.h"
 #include "client/IClient.h"
 #include "types/Song.h"
 
 namespace welle::model {
-    class SongListModel : public QAbstractListModel {
+    class QueueListModel : public QAbstractListModel {
         Q_OBJECT
         QML_ELEMENT
 
@@ -31,7 +29,7 @@ namespace welle::model {
             PlayCountRole,
         };
 
-        SongListModel(QQmlApplicationEngine * engine, QueueListModel* queue_list_model);
+        explicit QueueListModel(QObject* parent = nullptr);
 
         int rowCount(const QModelIndex& parent = QModelIndex()) const override;
         QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
@@ -39,18 +37,12 @@ namespace welle::model {
 
         Q_INVOKABLE void setSongs(const QList<medialib::types::Song>& songs);
         Q_INVOKABLE void appendSongs(const QList<medialib::types::Song>& songs);
-        Q_INVOKABLE void setFetchNextPageCallback(const std::function<void(uint32_t, uint32_t)> &fetchNextPageCallback);
-        Q_INVOKABLE void fetchNextPage();
         Q_INVOKABLE void play(int index) const;
-        Q_INVOKABLE void addToQueue(int index);
+        Q_INVOKABLE void updateSongs();
 
-        Q_PROPERTY(bool hasMore READ hasMore NOTIFY hasMoreChanged)
-        Q_PROPERTY(bool isLoading READ isLoading NOTIFY isLoadingChanged)
         Q_PROPERTY(QString currentTitle READ currentTitle)
         Q_PROPERTY(QString currentArtist READ currentArtist)
         Q_PROPERTY(QString currentCoverArt READ currentCoverArt)
-        bool hasMore() const { return m_HasMore; }
-        bool isLoading() const { return m_IsLoading; }
         static QString currentTitle() {
             return QString::fromStdString(medialib::audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().title);
         }
@@ -62,17 +54,10 @@ namespace welle::model {
         }
 
         signals:
-            void hasMoreChanged();
-            void isLoadingChanged();
-            void currentSongChanged();
+            void songsChanged();
 
     private:
         QList<medialib::types::Song> m_Songs;
-        std::function<void(uint32_t, uint32_t)> m_FetchNextPageCallback;
-        int m_Offset = 0;
-        int m_PageSize = 50;
-        bool m_HasMore = true;
-        bool m_IsLoading = false;
-        QueueListModel* m_QueueListModel;
+        uint64_t m_Offset = 0;
     };
 }

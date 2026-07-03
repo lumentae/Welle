@@ -1,4 +1,4 @@
-#include <model/SongListModel.h>
+#include <model/QueueListModel.h>
 #include <QtConcurrent>
 
 #include "Queue.h"
@@ -6,15 +6,13 @@
 #include "utility/Qt.h"
 
 namespace welle::model {
-    SongListModel::SongListModel(QQmlApplicationEngine *engine, QueueListModel *queue_list_model) :
-        QAbstractListModel(engine),
-        m_QueueListModel(queue_list_model) {}
+    QueueListModel::QueueListModel(QObject *parent) : QAbstractListModel(parent) {}
 
-    int SongListModel::rowCount(const QModelIndex &parent) const {
+    int QueueListModel::rowCount(const QModelIndex &parent) const {
         return m_Songs.size();
     }
 
-    QVariant SongListModel::data(const QModelIndex &index, const int role) const {
+    QVariant QueueListModel::data(const QModelIndex &index, int role) const {
         if (!index.isValid() || index.row() >= m_Songs.size())
             return {};
 
@@ -38,7 +36,7 @@ namespace welle::model {
         }
     }
 
-    QHash<int, QByteArray> SongListModel::roleNames() const {
+    QHash<int, QByteArray> QueueListModel::roleNames() const {
         return {
             { IdRole,        "songId"    },
             { IndexRole,     "songIndex" },
@@ -54,50 +52,35 @@ namespace welle::model {
         };
     }
 
-    void SongListModel::setSongs(const QList<medialib::types::Song> &songs) {
+    void QueueListModel::setSongs(const QList<medialib::types::Song> &songs) {
         beginResetModel();
         m_Songs = songs;
         endResetModel();
     }
 
-    void SongListModel::play(const int index) const {
+    void QueueListModel::play(const int index) const {
         if (index < 1 || index > m_Songs.size())
             return;
 
         const auto song = m_Songs.at(index - 1);
         medialib::Queue::getInstance().playNow(utility::Qt::qListToVector(m_Songs), index - 1);
-
-        m_QueueListModel->updateSongs();
     }
 
-    void SongListModel::addToQueue(const int index) {
-        medialib::Queue::getInstance().addToQueue({m_Songs[index]}, true);
+    void QueueListModel::updateSongs() {
+        auto& queue = medialib::Queue::getInstance();
+        const auto queueSongs = queue.getQueue();
+        const auto qlistSongs = utility::Qt::vectorToQList(queueSongs);
+        setSongs(qlistSongs);
+
+        emit songsChanged();
     }
 
-    void SongListModel::appendSongs(const QList<medialib::types::Song> &songs) {
+    void QueueListModel::appendSongs(const QList<medialib::types::Song> &songs) {
         beginInsertRows(QModelIndex(), m_Songs.size(), m_Songs.size() + songs.size() - 1);
         m_Songs.append(songs);
         endInsertRows();
         m_Offset += songs.size();
         
         medialib::Queue::getInstance().addToQueue(utility::Qt::qListToVector(songs));
-
-        m_IsLoading = false;
-        emit isLoadingChanged();
-
-        m_QueueListModel->updateSongs();
-    }
-
-    void SongListModel::setFetchNextPageCallback(const std::function<void(uint32_t, uint32_t)> &fetchNextPageCallback) {
-        m_FetchNextPageCallback = fetchNextPageCallback;
-    }
-
-    void SongListModel::fetchNextPage() {
-        if (m_IsLoading || !m_HasMore || !m_FetchNextPageCallback) return;
-        m_IsLoading = true;
-        emit isLoadingChanged();
-        QThreadPool::globalInstance()->start([this] {
-            m_FetchNextPageCallback(m_Offset, m_PageSize);
-        });
     }
 }
