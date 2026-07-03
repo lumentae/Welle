@@ -28,6 +28,7 @@ namespace welle::model {
             SuffixRole,
             PlayCountRole,
         };
+        Q_ENUM(Roles)
 
         explicit QueueListModel(QObject* parent = nullptr);
 
