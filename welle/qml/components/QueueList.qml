@@ -31,6 +31,7 @@ Rectangle {
 
                 RowLayout {
                     anchors.fill: parent
+                    anchors.leftMargin: 16
                     width: parent.width
                     height: 56
                     spacing: 12
