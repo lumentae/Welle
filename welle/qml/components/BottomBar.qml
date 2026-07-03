@@ -143,7 +143,7 @@ Rectangle {
                         contentItem: Text {
                             font.family: "Material Symbols Rounded"
                             font.pixelSize: 24
-                            text: playingSong.paused ? "\ue034" : "\ue037"
+                            text: playingSong.paused ? "\ue037" : "\ue034"
                             horizontalAlignment: Text.AlignHCenter
                             verticalAlignment: Text.AlignVCenter
                         }
