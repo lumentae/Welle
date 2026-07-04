@@ -24,4 +24,4 @@ I really love listening to music any chance I get, but I often don't have intern
 - [x] MPRIS
 - [x] Volume slider
 - [x] Context menu
-- [x] Add a queue list on the right side
+- [x] Add a queue list on the right side (in progress, currently incomplete)

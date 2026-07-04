@@ -14,6 +14,8 @@ add_library(medialib STATIC
         src/audio/AudioPlayer.cpp
         src/audio/MprisServer.cpp
         src/client/OpenSubsonicClient.cpp
+        src/Database.cpp
+        include/Database.h
 )
 
 target_link_libraries(medialib PUBLIC
@@ -23,6 +25,8 @@ target_link_libraries(medialib PUBLIC
         miniaudio
         miniaudio_libopus
         mpris-server
+        SQLiteCpp
+        sqlite3
 )
 
 target_include_directories(medialib PUBLIC include)

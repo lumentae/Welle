@@ -4,6 +4,7 @@
 #include <qqmlcontext.h>
 #include <queue>
 
+#include "Database.h"
 #include "PlayingSongModel.h"
 #include "Queue.h"
 #include "QueueListModel.h"
@@ -21,6 +22,9 @@ int main(int argc, char* argv[]) {
 
     medialib::client::OpenSubsonicClient client(argv[1], argv[2], argv[3]);
     client.ping();
+
+    auto& database = medialib::Database::getInstance();
+    database.init();
 
     medialib::audio::AudioPlayer::getInstance().initialize([&](const medialib::types::Song& song) {
         std::cout << "Downloading " << song.title << "..." << std::endl;
