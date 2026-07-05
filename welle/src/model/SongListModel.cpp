@@ -58,6 +58,9 @@ namespace welle::model {
         beginResetModel();
         m_Songs = songs;
         endResetModel();
+
+        m_LoadedFromDatabase = true;
+        m_Offset = m_Songs.size();
     }
 
     void SongListModel::play(const int index) const {
@@ -94,6 +97,10 @@ namespace welle::model {
 
     void SongListModel::fetchNextPage() {
         if (m_IsLoading || !m_HasMore || !m_FetchNextPageCallback) return;
+        if (m_LoadedFromDatabase) {
+            m_LoadedFromDatabase = false;
+            return;
+        }
         m_IsLoading = true;
         emit isLoadingChanged();
         QThreadPool::globalInstance()->start([this] {

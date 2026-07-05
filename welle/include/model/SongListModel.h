@@ -73,6 +73,7 @@ namespace welle::model {
         int m_PageSize = 50;
         bool m_HasMore = true;
         bool m_IsLoading = false;
+        bool m_LoadedFromDatabase = false;
         QueueListModel* m_QueueListModel;
     };
 }

@@ -62,6 +62,8 @@ int main(int argc, char* argv[]) {
         songListModel->appendSongs(utility::Qt::vectorToQList(newSongs));
     });
 
+    songListModel->setSongs(utility::Qt::vectorToQList(database.getSongs()));
+
     medialib::audio::AudioPlayer::getInstance().setAfterPlayCallback([&] {
         playingSongModel->update();
     });

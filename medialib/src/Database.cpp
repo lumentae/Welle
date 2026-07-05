@@ -111,6 +111,38 @@ namespace welle::medialib {
         }
     }
 
+    std::vector<types::Song> Database::getSongs() const {
+        SQLite::Statement statement(*m_Database, R"(
+            SELECT * FROM songs
+        )");
+
+        std::vector<types::Song> songs;
+        while (statement.executeStep()) {
+            types::Song song {
+                .album = statement.getColumn(0).getString(),
+                .albumId = statement.getColumn(1).getString(),
+                .artist = statement.getColumn(2).getString(),
+                .artistId = statement.getColumn(3).getString(),
+                .bitrate = statement.getColumn(4).getUInt(),
+                .coverArt = statement.getColumn(5).getString(),
+                .created = statement.getColumn(6).getString(),
+                .duration = statement.getColumn(7).getUInt(),
+                .genre = statement.getColumn(8).getString(),
+                .id = statement.getColumn(9).getString(),
+                .path = statement.getColumn(10).getString(),
+                .playCount = statement.getColumn(11).getUInt(),
+                .played = statement.getColumn(12).getString(),
+                .samplingRate = statement.getColumn(13).getUInt(),
+                .size = statement.getColumn(14).getUInt(),
+                .suffix = statement.getColumn(15).getString(),
+                .title = statement.getColumn(16).getString(),
+                .year = statement.getColumn(17).getInt(),
+            };
+            songs.push_back(song);
+        }
+        return songs;
+    }
+
     void Database::close() {
         m_Database.reset();
     }

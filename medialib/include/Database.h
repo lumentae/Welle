@@ -16,6 +16,8 @@ namespace welle::medialib {
 
         void insertSongs(const std::vector<types::Song> &songs) const;
 
+        std::vector<types::Song> getSongs() const;
+
         void close();
 
     private:
