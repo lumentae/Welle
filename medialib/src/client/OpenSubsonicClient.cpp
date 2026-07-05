@@ -2,6 +2,7 @@
 #include <random>
 #include <client/OpenSubsonicClient.h>
 
+#include "Database.h"
 #include "quickdigest5.hpp"
 #include "cpr/cpr.h"
 #include "nlohmann/json.hpp"
@@ -68,8 +69,10 @@ namespace welle::medialib::client {
     std::vector<types::Song> OpenSubsonicClient::getSongs(OpenSubsonicSearchParameters searchParameters) {
         searchParameters.albumCount = 0;
         searchParameters.artistCount = 0;
+
         const nlohmann::json response = search3(searchParameters);
         std::cout << response.dump(4) << std::endl;
+
         auto songsJson = response["subsonic-response"]["searchResult3"];
         if (!songsJson.contains("song"))
             return {};
@@ -79,6 +82,8 @@ namespace welle::medialib::client {
         for (auto& song : songs) {
             downloadCoverArt(song);
         }
+
+        Database::getInstance().insertSongs(songs);
         return songs;
     }
 

@@ -19,6 +19,7 @@ I really love listening to music any chance I get, but I often don't have intern
 - [ ] Android support
 - [ ] TUI
 - [ ] Save password more securely
+- [ ] Parametric and graphic equalizer
 
 ### Completed
 - [x] MPRIS

@@ -1,6 +1,8 @@
 #pragma once
 #include <SQLiteCpp/SQLiteCpp.h>
 
+#include "types/Song.h"
+
 namespace welle::medialib {
     class Database {
     public:
@@ -11,6 +13,9 @@ namespace welle::medialib {
         }
 
         void init();
+
+        void insertSongs(const std::vector<types::Song> &songs) const;
+
         void close();
 
     private:
