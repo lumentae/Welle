@@ -6,9 +6,7 @@
 #include "utility/Qt.h"
 
 namespace welle::model {
-    SongListModel::SongListModel(QQmlApplicationEngine *engine, QueueListModel *queue_list_model) :
-        QAbstractListModel(engine),
-        m_QueueListModel(queue_list_model) {}
+    SongListModel::SongListModel(QQmlApplicationEngine *engine) : QAbstractListModel(engine) {}
 
     int SongListModel::rowCount(const QModelIndex &parent) const {
         return m_Songs.size();

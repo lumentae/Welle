@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
     });
 
     auto* queueListModel = new model::QueueListModel(&engine);
-    auto* songListModel = new model::SongListModel(&engine, queueListModel);
+    auto* songListModel = new model::SongListModel(&engine);
     auto* playingSongModel = new model::PlayingSongModel(&engine);
     engine.rootContext()->setContextProperty("songListModel", songListModel);
     engine.rootContext()->setContextProperty("queueListModel", queueListModel);
@@ -63,6 +63,7 @@ int main(int argc, char* argv[]) {
     });
 
     songListModel->setSongs(utility::Qt::vectorToQList(database.getSongs()));
+    songListModel->setQueueListModel(queueListModel);
 
     medialib::audio::AudioPlayer::getInstance().setAfterPlayCallback([&] {
         playingSongModel->update();

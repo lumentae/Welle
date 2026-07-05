@@ -15,6 +15,7 @@ namespace welle::model {
     class SongListModel : public QAbstractListModel {
         Q_OBJECT
         QML_ELEMENT
+        QML_UNCREATABLE("SongListModel should be created from C++")
 
     public:
         enum Roles {
@@ -31,7 +32,7 @@ namespace welle::model {
             PlayCountRole,
         };
 
-        SongListModel(QQmlApplicationEngine * engine, QueueListModel* queue_list_model);
+        explicit SongListModel(QQmlApplicationEngine* engine);
 
         int rowCount(const QModelIndex& parent = QModelIndex()) const override;
         QVariant data(const QModelIndex& index, int role = Qt::DisplayRole) const override;
@@ -60,6 +61,8 @@ namespace welle::model {
         static QString currentCoverArt() {
             return QString::fromStdString(medialib::audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().coverArt);
         }
+
+        void setQueueListModel(QueueListModel* queueListModel) { m_QueueListModel = queueListModel; }
 
         signals:
             void hasMoreChanged();

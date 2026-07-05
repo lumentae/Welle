@@ -13,6 +13,7 @@ namespace welle::model {
     class QueueListModel : public QAbstractListModel {
         Q_OBJECT
         QML_ELEMENT
+        QML_UNCREATABLE("QueueListModel should be created from C++")
 
     public:
         enum Roles {
