@@ -62,6 +62,18 @@ namespace welle::medialib {
                 year INT
             )
         )");
+
+        m_Database->exec(R"(
+            CREATE TABLE IF NOT EXISTS playlists (
+                id TEXT PRIMARY KEY,
+                name TEXT,
+                owner TEXT,
+                created DATETIME,
+                changed DATETIME,
+                songCount INT,
+                duration INT
+            )
+        )");
     }
 
     void Database::insertSongs(const std::vector<types::Song> &songs) const {
@@ -141,6 +153,34 @@ namespace welle::medialib {
             songs.push_back(song);
         }
         return songs;
+    }
+
+    void Database::insertPlaylists(const std::vector<types::Playlist> &playlists) const {
+        for (const auto&[id, name, owner, created, changed, songCount, duration] : playlists) {
+            SQLite::Statement statement(*m_Database, R"(
+                INSERT INTO songs
+                VALUES (
+                    :id,
+                    :name,
+                    :owner,
+                    :created,
+                    :changed,
+                    :songCount,
+                    :duration
+                )
+            )");
+            statement.bind(":id", id);
+            statement.bind(":name", name);
+            statement.bind(":owner", owner);
+            statement.bind(":created", created);
+            statement.bind(":changed", changed);
+            statement.bind(":songCount", songCount);
+            statement.bind(":duration", duration);
+            statement.exec();
+        }
+    }
+
+    std::vector<types::Playlist> Database::getPlaylists() const {
     }
 
     void Database::close() {
