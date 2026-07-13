@@ -10,12 +10,11 @@ Rectangle {
 
     property var selectedEntry;
 
-    Column {
+    ColumnLayout {
         id: sidebarEntries;
-        anchors.top: parent.top;
-        anchors.horizontalCenter: parent.horizontalCenter;
+        anchors.fill: parent;
+        anchors.topMargin: 10;
         spacing: 4;
-        topPadding: 8;
 
         SidebarEntry {
             textContent: "Home";
@@ -47,6 +46,70 @@ Rectangle {
             onClicked: () => {
                 sidebar.selectedEntry = textContent;
                 mainContent.loader.setSource("qrc:/qt/qml/welle/qml/pages/Artists.qml");
+            }
+        }
+
+        Rectangle {
+            Layout.fillWidth: true;
+            Layout.preferredHeight: 1;
+            color: borderColor
+        }
+
+        ListView {
+            Layout.fillWidth: true;
+            Layout.fillHeight: true;
+            model: playlistModel
+            clip: true
+            spacing: 10
+
+            delegate: Rectangle {
+                width: ListView.view.width
+                height: 56
+                color: "transparent"
+
+                RowLayout {
+                    width: parent.width
+                    height: parent.height
+                    spacing: 4
+
+                    Rectangle {
+                        // margin
+                        Layout.fillHeight: true
+                        width: 4
+                        color: "transparent"
+                    }
+                    Image {
+                        source: coverArt
+                        asynchronous: true
+                        sourceSize.width: 48
+                        sourceSize.height: 48
+                    }
+                    Rectangle {
+                        // margin
+                        Layout.fillHeight: true
+                        width: 1
+                        color: "transparent"
+                    }
+                    ColumnLayout {
+                        Layout.fillWidth: true
+                        Text {
+                            text: title
+                            color: primaryTextColor
+                            font.pixelSize: 13
+                            elide: Text.ElideRight
+                            maximumLineCount: 1
+                            Layout.fillWidth: true
+                        }
+                        Text {
+                            text: artist
+                            color: secondaryTextColor
+                            font.pixelSize: 11
+                            elide: Text.ElideRight
+                            maximumLineCount: 1
+                            Layout.fillWidth: true
+                        }
+                    }
+                }
             }
         }
     }

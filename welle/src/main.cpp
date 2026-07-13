@@ -37,6 +37,7 @@ int main(int argc, char* argv[]) {
     engine.rootContext()->setContextProperty("songListModel", songListModel);
     engine.rootContext()->setContextProperty("queueListModel", queueListModel);
     engine.rootContext()->setContextProperty("playingSong", playingSongModel);
+    engine.rootContext()->setContextProperty("playlistModel", songListModel);
     engine.rootContext()->setContextProperty("primaryColor", "#0f0f0f");
     engine.rootContext()->setContextProperty("primaryColorSelected", "#333");
     engine.rootContext()->setContextProperty("primaryTextColor", "#e0e0e0");
