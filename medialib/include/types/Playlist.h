@@ -2,7 +2,7 @@
 #include <string>
 #include <nlohmann/json.hpp>
 
-#include "Artist.h"
+#include "Song.h"
 
 namespace welle::medialib::types {
     struct Playlist {
@@ -13,6 +13,7 @@ namespace welle::medialib::types {
         std::string changed;
         uint32_t songCount;
         uint32_t duration;
+        std::vector<Song> entry;
     };
-    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(Playlist, id, name, owner, created, changed, songCount, duration)
+    NLOHMANN_DEFINE_TYPE_NON_INTRUSIVE_WITH_DEFAULT(Playlist, id, name, owner, created, changed, songCount, duration, entry)
 }

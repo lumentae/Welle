@@ -87,20 +87,22 @@ namespace welle::medialib::client {
         return songs;
     }
 
+    // TODO: Add to db
     std::vector<types::Artist> OpenSubsonicClient::getArtists(const OpenSubsonicSearchParameters searchParameters) {
         const nlohmann::json response = search3(searchParameters);
         return response["subsonic-response"]["searchResult3"]["artist"].get<std::vector<types::Artist>>();
     }
 
+    // TODO: Add to db
     std::vector<types::Album> OpenSubsonicClient::getAlbums(const OpenSubsonicSearchParameters searchParameters) {
         const nlohmann::json response = search3(searchParameters);
         return response["subsonic-response"]["searchResult3"]["album"].get<std::vector<types::Album>>();
     }
 
     std::vector<types::Playlist> OpenSubsonicClient::getPlaylists() {
-        const nlohmann::json response = performRequest("getPlaylists.view");
+        const nlohmann::json response = nlohmann::json::parse(performRequest("getPlaylists.view"));
         const auto playlists = response["subsonic-response"]["playlists"]["playlist"].get<std::vector<types::Playlist>>();
-        
+
         Database::getInstance().insertPlaylists(playlists);
         return playlists;
     }

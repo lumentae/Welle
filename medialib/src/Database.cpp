@@ -79,7 +79,7 @@ namespace welle::medialib {
     void Database::insertSongs(const std::vector<types::Song> &songs) const {
         for (auto& song : songs) {
             SQLite::Statement statement(*m_Database, R"(
-                INSERT INTO songs
+                INSERT OR IGNORE INTO songs
                 VALUES (
                     :album,
                     :albumId,
@@ -155,10 +155,11 @@ namespace welle::medialib {
         return songs;
     }
 
+    // TODO: insert plalylist songs into db somehow
     void Database::insertPlaylists(const std::vector<types::Playlist> &playlists) const {
-        for (const auto&[id, name, owner, created, changed, songCount, duration] : playlists) {
+        for (const auto& playlist : playlists) {
             SQLite::Statement statement(*m_Database, R"(
-                INSERT INTO songs
+                INSERT OR IGNORE INTO playlists
                 VALUES (
                     :id,
                     :name,
@@ -169,18 +170,36 @@ namespace welle::medialib {
                     :duration
                 )
             )");
-            statement.bind(":id", id);
-            statement.bind(":name", name);
-            statement.bind(":owner", owner);
-            statement.bind(":created", created);
-            statement.bind(":changed", changed);
-            statement.bind(":songCount", songCount);
-            statement.bind(":duration", duration);
+            statement.bind(":id", playlist.id);
+            statement.bind(":name", playlist.name);
+            statement.bind(":owner", playlist.owner);
+            statement.bind(":created", playlist.created);
+            statement.bind(":changed", playlist.changed);
+            statement.bind(":songCount", playlist.songCount);
+            statement.bind(":duration", playlist.duration);
             statement.exec();
         }
     }
 
     std::vector<types::Playlist> Database::getPlaylists() const {
+        SQLite::Statement statement(*m_Database, R"(
+            SELECT * FROM playlists
+        )");
+
+        std::vector<types::Playlist> playlists;
+        while (statement.executeStep()) {
+            types::Playlist playlist {
+                .id = statement.getColumn(0).getString(),
+                .name = statement.getColumn(1).getString(),
+                .owner = statement.getColumn(2).getString(),
+                .created = statement.getColumn(3).getString(),
+                .changed = statement.getColumn(4).getString(),
+                .songCount = statement.getColumn(5).getUInt(),
+                .duration = statement.getColumn(6).getUInt(),
+            };
+            playlists.push_back(playlist);
+        }
+        return playlists;
     }
 
     void Database::close() {

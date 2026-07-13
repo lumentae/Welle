@@ -6,6 +6,7 @@
 
 #include "Database.h"
 #include "PlayingSongModel.h"
+#include "PlaylistListModel.h"
 #include "Queue.h"
 #include "QueueListModel.h"
 #include "audio/AudioPlayer.h"
@@ -34,10 +35,11 @@ int main(int argc, char* argv[]) {
     auto* queueListModel = new model::QueueListModel(&engine);
     auto* songListModel = new model::SongListModel(&engine);
     auto* playingSongModel = new model::PlayingSongModel(&engine);
+    auto* playlistListModel = new model::PlaylistListModel(&engine);
     engine.rootContext()->setContextProperty("songListModel", songListModel);
     engine.rootContext()->setContextProperty("queueListModel", queueListModel);
     engine.rootContext()->setContextProperty("playingSong", playingSongModel);
-    engine.rootContext()->setContextProperty("playlistModel", songListModel);
+    engine.rootContext()->setContextProperty("playlistListModel", playlistListModel);
     engine.rootContext()->setContextProperty("primaryColor", "#0f0f0f");
     engine.rootContext()->setContextProperty("primaryColorSelected", "#333");
     engine.rootContext()->setContextProperty("primaryTextColor", "#e0e0e0");
@@ -65,6 +67,9 @@ int main(int argc, char* argv[]) {
 
     songListModel->setSongs(utility::Qt::vectorToQList(database.getSongs()));
     songListModel->setQueueListModel(queueListModel);
+
+    const auto playlists = client.getPlaylists();
+    playlistListModel->setPlaylists(utility::Qt::vectorToQList(playlists));
 
     medialib::audio::AudioPlayer::getInstance().setAfterPlayCallback([&] {
         playingSongModel->update();

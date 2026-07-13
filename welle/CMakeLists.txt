@@ -10,6 +10,8 @@ qt_standard_project_setup(REQUIRES 6.8)
 qt_add_executable(Welle
         src/main.cpp
         include/utility/Qt.h
+        src/model/PlaylistListModel.cpp
+        include/model/PlaylistListModel.h
 )
 
 qt_add_qml_module(Welle

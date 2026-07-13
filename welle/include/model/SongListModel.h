@@ -31,6 +31,7 @@ namespace welle::model {
             SuffixRole,
             PlayCountRole,
         };
+        Q_ENUM(Roles)
 
         explicit SongListModel(QQmlApplicationEngine* engine);
 

@@ -58,9 +58,9 @@ Rectangle {
         ListView {
             Layout.fillWidth: true;
             Layout.fillHeight: true;
-            model: playlistModel
+            model: playlistListModel
             clip: true
-            spacing: 10
+            spacing: 4
 
             delegate: Rectangle {
                 width: ListView.view.width
@@ -93,7 +93,7 @@ Rectangle {
                     ColumnLayout {
                         Layout.fillWidth: true
                         Text {
-                            text: title
+                            text: name
                             color: primaryTextColor
                             font.pixelSize: 13
                             elide: Text.ElideRight
@@ -101,7 +101,7 @@ Rectangle {
                             Layout.fillWidth: true
                         }
                         Text {
-                            text: artist
+                            text: songCount
                             color: secondaryTextColor
                             font.pixelSize: 11
                             elide: Text.ElideRight
