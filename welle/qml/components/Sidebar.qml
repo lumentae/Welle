@@ -109,6 +109,12 @@ Rectangle {
                             Layout.fillWidth: true
                         }
                     }
+                    Rectangle {
+                        // margin
+                        Layout.fillHeight: true
+                        width: 1
+                        color: "transparent"
+                    }
                 }
             }
         }
