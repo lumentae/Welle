@@ -97,6 +97,14 @@ namespace welle::medialib::client {
         return response["subsonic-response"]["searchResult3"]["album"].get<std::vector<types::Album>>();
     }
 
+    std::vector<types::Playlist> OpenSubsonicClient::getPlaylists() {
+        const nlohmann::json response = performRequest("getPlaylists.view");
+        const auto playlists = response["subsonic-response"]["playlists"]["playlist"].get<std::vector<types::Playlist>>();
+        
+        Database::getInstance().insertPlaylists(playlists);
+        return playlists;
+    }
+
     void OpenSubsonicClient::downloadCoverArt(const types::Song &song) {
         // TODO: submit this to background thread
         if (!std::filesystem::exists({"cache"}))

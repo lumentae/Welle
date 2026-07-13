@@ -1,6 +1,7 @@
 add_subdirectory(external)
 
 add_library(medialib STATIC
+        include/Database.h
         include/Queue.h
         include/audio/AudioPlayer.h
         include/audio/MprisServer.h
@@ -8,14 +9,14 @@ add_library(medialib STATIC
         include/client/OpenSubsonicClient.h
         include/types/Album.h
         include/types/Artist.h
+        include/types/Playlist.h
         include/types/Song.h
         include/utility/String.h
+        src/Database.cpp
         src/Queue.cpp
         src/audio/AudioPlayer.cpp
         src/audio/MprisServer.cpp
         src/client/OpenSubsonicClient.cpp
-        src/Database.cpp
-        include/Database.h
 )
 
 target_link_libraries(medialib PUBLIC

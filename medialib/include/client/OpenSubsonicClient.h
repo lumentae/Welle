@@ -29,6 +29,7 @@ namespace welle::medialib::client {
         std::vector<types::Song> getSongs(OpenSubsonicSearchParameters searchParameters = {}) override;
         std::vector<types::Artist> getArtists(OpenSubsonicSearchParameters searchParameters = {}) override;
         std::vector<types::Album> getAlbums(OpenSubsonicSearchParameters searchParameters = {}) override;
+        std::vector<types::Playlist> getPlaylists() override;
 
         void downloadCoverArt(const types::Song &song) override;
         void downloadSong(const types::Song &song) override;
