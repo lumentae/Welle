@@ -12,17 +12,19 @@ I really love listening to music any chance I get, but I often don't have intern
     - [ ] Settings
     - [ ] About
     - [ ] Playlists
-- [ ] Offload downloads to a separate thread
-- [ ] Cache playlists and tracks in a database
-- [ ] Lyrics
 - [ ] Add a search bar
-- [ ] Android support
-- [ ] TUI
 - [ ] Save password more securely
-- [ ] Parametric and graphic equalizer
 
 ### Completed
 - [x] MPRIS
 - [x] Volume slider
 - [x] Context menu
 - [x] Add a queue list on the right side (in progress, currently incomplete)
+- [x] Cache playlists and tracks in a database
+
+### Not implementing
+- [ ] Parametric and graphic equalizer
+- [ ] Android support
+- [ ] TUI
+- [ ] Lyrics
+- [ ] Offload downloads to a separate thread
