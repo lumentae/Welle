@@ -87,10 +87,29 @@ namespace welle::medialib::client {
         return songs;
     }
 
-    // TODO: Add to db
-    std::vector<types::Artist> OpenSubsonicClient::getArtists(const OpenSubsonicSearchParameters searchParameters) {
+    std::vector<types::Artist> OpenSubsonicClient::getArtists(OpenSubsonicSearchParameters searchParameters) {
+        searchParameters.albumCount = 0;
+        searchParameters.songCount = 0;
+
         const nlohmann::json response = search3(searchParameters);
-        return response["subsonic-response"]["searchResult3"]["artist"].get<std::vector<types::Artist>>();
+        std::cout << response.dump(4) << std::endl;
+
+        auto searchResult = response["subsonic-response"]["searchResult3"];
+        if (!searchResult.contains("artist"))
+            return {};
+
+        const auto artistsJson = searchResult["artist"];
+        if (!artistsJson.is_array() || artistsJson.empty())
+            return {};
+
+        auto artists = artistsJson.get<std::vector<types::Artist>>();
+
+        for (auto& artist : artists) {
+            downloadCoverArt(artist);
+        }
+
+        Database::getInstance().insertArtists(artists);
+        return artists;
     }
 
     // TODO: Add to db
@@ -107,7 +126,8 @@ namespace welle::medialib::client {
         return playlists;
     }
 
-    void OpenSubsonicClient::downloadCoverArt(const types::Song &song) {
+    template <typename T>
+    void OpenSubsonicClient::downloadCoverArt(const T &song) {
         // TODO: submit this to background thread
         if (!std::filesystem::exists({"cache"}))
             std::filesystem::create_directory({"cache"});

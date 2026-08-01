@@ -4,6 +4,7 @@
 #include <qqmlcontext.h>
 #include <queue>
 
+#include "ArtistListModel.h"
 #include "Database.h"
 #include "PlayingSongModel.h"
 #include "PlaylistListModel.h"
@@ -36,10 +37,13 @@ int main(int argc, char* argv[]) {
     auto* songListModel = new model::SongListModel(&engine);
     auto* playingSongModel = new model::PlayingSongModel(&engine);
     auto* playlistListModel = new model::PlaylistListModel(&engine);
+    auto* artistListModel = new model::ArtistListModel(&engine);
+
     engine.rootContext()->setContextProperty("songListModel", songListModel);
     engine.rootContext()->setContextProperty("queueListModel", queueListModel);
     engine.rootContext()->setContextProperty("playingSong", playingSongModel);
     engine.rootContext()->setContextProperty("playlistListModel", playlistListModel);
+    engine.rootContext()->setContextProperty("artistListModel", artistListModel);
     engine.rootContext()->setContextProperty("primaryColor", "#0f0f0f");
     engine.rootContext()->setContextProperty("primaryColorSelected", "#333");
     engine.rootContext()->setContextProperty("primaryTextColor", "#e0e0e0");
@@ -64,9 +68,17 @@ int main(int argc, char* argv[]) {
         });
         songListModel->appendSongs(utility::Qt::vectorToQList(newSongs));
     });
-
     songListModel->setSongs(utility::Qt::vectorToQList(database.getSongs()));
     songListModel->setQueueListModel(queueListModel);
+
+    artistListModel->setFetchNextPageCallback([&](const uint32_t offset, const uint32_t count) {
+        const auto newElements = client.getArtists({
+            .artistCount = count,
+            .artistOffset = offset
+        });
+        artistListModel->append(utility::Qt::vectorToQList(newElements));
+    });
+    artistListModel->set(utility::Qt::vectorToQList(database.getArtists()));
 
     const auto playlists = client.getPlaylists();
     playlistListModel->setPlaylists(utility::Qt::vectorToQList(playlists));

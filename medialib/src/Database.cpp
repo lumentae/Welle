@@ -202,6 +202,46 @@ namespace welle::medialib {
         return playlists;
     }
 
+    void Database::insertArtists(const std::vector<types::Artist> &artists) const {
+        for (const auto& artist : artists) {
+            SQLite::Statement statement(*m_Database, R"(
+                INSERT OR IGNORE INTO artists
+                VALUES (
+                    :albumCount,
+                    :artistImageUrl,
+                    :coverArt,
+                    :id,
+                    :name
+                )
+            )");
+            statement.bind(":albumCount", artist.albumCount);
+            statement.bind(":artistImageUrl", artist.artistImageUrl);
+            statement.bind(":coverArt", artist.coverArt);
+            statement.bind(":id", artist.id);
+            statement.bind(":name", artist.name);
+            statement.exec();
+        }
+    }
+
+    std::vector<types::Artist> Database::getArtists() const {
+        SQLite::Statement statement(*m_Database, R"(
+            SELECT * FROM artists
+        )");
+
+        std::vector<types::Artist> artists;
+        while (statement.executeStep()) {
+            types::Artist artist {
+                .albumCount = statement.getColumn(0).getUInt(),
+                .artistImageUrl = statement.getColumn(1).getString(),
+                .coverArt = statement.getColumn(2).getString(),
+                .id = statement.getColumn(3).getString(),
+                .name = statement.getColumn(4).getString(),
+            };
+            artists.push_back(artist);
+        }
+        return artists;
+    }
+
     void Database::close() {
         m_Database.reset();
     }

@@ -22,6 +22,10 @@ namespace welle::medialib {
         void insertPlaylists(const std::vector<types::Playlist> &playlists) const;
         [[nodiscard]] std::vector<types::Playlist> getPlaylists() const;
 
+        void insertArtists(const std::vector<types::Artist> &artists) const;
+
+        std::vector<types::Artist> getArtists() const;
+
     private:
         std::shared_ptr<SQLite::Database> m_Database{};
     };

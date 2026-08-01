@@ -7,13 +7,10 @@ I really love listening to music any chance I get, but I often don't have intern
 ## TODO
 - [ ] Implement pages
     - [ ] Home
-    - [ ] Artist
-    - [ ] Album
-    - [ ] Settings
-    - [ ] About
+    - [ ] Artists
+    - [ ] Albums
     - [ ] Playlists
 - [ ] Add a search bar
-- [ ] Save password more securely
 
 ### Completed
 - [x] MPRIS
@@ -28,3 +25,4 @@ I really love listening to music any chance I get, but I often don't have intern
 - [ ] TUI
 - [ ] Lyrics
 - [ ] Offload downloads to a separate thread
+- [ ] Save password more securely

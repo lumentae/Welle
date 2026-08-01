@@ -10,8 +10,6 @@ qt_standard_project_setup(REQUIRES 6.8)
 qt_add_executable(Welle
         src/main.cpp
         include/utility/Qt.h
-        src/model/PlaylistListModel.cpp
-        include/model/PlaylistListModel.h
 )
 
 qt_add_qml_module(Welle
@@ -25,12 +23,17 @@ qt_add_qml_module(Welle
             qml/components/SidebarEntry.qml
             qml/components/Content.qml
             qml/components/QueueList.qml
+            qml/pages/Artists.qml
             qml/pages/Songs.qml
         SOURCES
+            include/model/ArtistListModel.h
             include/model/PlayingSongModel.h
+            include/model/PlaylistListModel.h
             include/model/QueueListModel.h
             include/model/SongListModel.h
+            src/model/ArtistListModel.cpp
             src/model/PlayingSongModel.cpp
+            src/model/PlaylistListModel.cpp
             src/model/QueueListModel.cpp
             src/model/SongListModel.cpp
         RESOURCES
