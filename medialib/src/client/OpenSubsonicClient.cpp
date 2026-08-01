@@ -103,12 +103,15 @@ namespace welle::medialib::client {
             return {};
 
         auto artists = artistsJson.get<std::vector<types::Artist>>();
-
         for (auto& artist : artists) {
             downloadCoverArt(artist);
         }
 
-        Database::getInstance().insertArtists(artists);
+        std::thread insertThread([this, artists] {
+            Database::getInstance().insertArtists(artists);
+        });
+        insertThread.detach();
+
         return artists;
     }
 
@@ -129,18 +132,21 @@ namespace welle::medialib::client {
     template <typename T>
     void OpenSubsonicClient::downloadCoverArt(const T &song) {
         // TODO: submit this to background thread
-        if (!std::filesystem::exists({"cache"}))
-            std::filesystem::create_directory({"cache"});
+        std::thread downloadThread([this, song] {
+            if (!std::filesystem::exists({"cache"}))
+                std::filesystem::create_directory({"cache"});
 
-        const auto cachePath = std::filesystem::path("cache/" + song.coverArt);
-        if (std::filesystem::exists(cachePath))
-            return;
+            const auto cachePath = std::filesystem::path("cache/" + song.coverArt);
+            if (std::filesystem::exists(cachePath))
+                return;
 
-        const auto response = performRequest("getCoverArt.view",
-            {
-                {"id", song.coverArt}
-            });
-        std::ofstream(cachePath, std::ios::binary) << response;
+            const auto response = performRequest("getCoverArt.view",
+                {
+                    {"id", song.coverArt}
+                });
+            std::ofstream(cachePath, std::ios::binary) << response;
+        });
+        downloadThread.detach();
     }
 
     void OpenSubsonicClient::downloadSong(const types::Song &song) {

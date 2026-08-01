@@ -8,6 +8,11 @@ ListView {
     model: artistListModel
     clip: true
 
+    function fetchMoreIfNeeded() {
+        if (!artistListModel.isLoading && contentY + height >= contentHeight - 200)
+            artistListModel.fetchNextPage()
+    }
+
     delegate: Rectangle {
         width: ListView.view.width
         height: 100
@@ -19,16 +24,22 @@ ListView {
             height: parent.height
 
             Text { text: "Artist" }
-            Text { text: name }
-            Text { text: id }
-            Text { text: index }
-            Text { text: albumCount }
+            Text { text: name ?? "" }
+            Text { text: id ?? "" }
+            Text { text: String(index ?? "") }
+            Text { text: String(albumCount ?? "") }
         }
     }
 
-    onContentYChanged: {
-        if (!artistListModel.isLoading && contentY + height >= contentHeight - 200)
-            artistListModel.fetchNextPage()
+    onContentYChanged: fetchMoreIfNeeded()
+    onContentHeightChanged: fetchMoreIfNeeded()
+
+    Connections {
+        target: artistListModel
+
+        function onIsLoadingChanged() {
+            fetchMoreIfNeeded()
+        }
     }
 
     footer: Item {

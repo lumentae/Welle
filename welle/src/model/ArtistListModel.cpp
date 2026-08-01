@@ -50,10 +50,28 @@ namespace welle::model {
     }
 
     void ArtistListModel::append(const QList<medialib::types::Artist> &artists) {
-        beginInsertRows(QModelIndex(), m_Entries.size(), m_Entries.size() + m_Entries.size() - 1);
+        if (artists.isEmpty()) {
+            m_HasMore = false;
+            emit hasMoreChanged();
+
+            m_IsLoading = false;
+            emit isLoadingChanged();
+            return;
+        }
+
+        const int first = m_Entries.size();
+        const int last = first + artists.size() - 1;
+
+        beginInsertRows(QModelIndex(), first, last);
         m_Entries.append(artists);
         endInsertRows();
+
         m_Offset += artists.size();
+
+        if (artists.size() < m_PageSize) {
+            m_HasMore = false;
+            emit hasMoreChanged();
+        }
 
         m_IsLoading = false;
         emit isLoadingChanged();
