@@ -3,7 +3,14 @@
 namespace welle::provider {
     QImage CoverArtImageProvider::requestImage(const QString &id, QSize *size, const QSize &requestedSize) {
         const auto path = m_Client->downloadCoverArt(id.toStdString());
-        return QImage(path.c_str()).scaled(64, 64);
+        const QImage image(path.c_str());
+
+        const QSize targetSize = requestedSize.isValid() ? requestedSize : QSize(56, 56);
+        if (size) {
+            *size = image.size();
+        }
+
+        return image.scaled(targetSize, Qt::KeepAspectRatioByExpanding, Qt::SmoothTransformation);
     }
 
     void CoverArtImageProvider::setClient(medialib::client::OpenSubsonicClient *client) {
