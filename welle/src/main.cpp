@@ -14,6 +14,7 @@
 #include "audio/MprisServer.h"
 #include "client/OpenSubsonicClient.h"
 #include "model/SongListModel.h"
+#include "provider/CoverArtImageProvider.h"
 #include "utility/Qt.h"
 
 using namespace welle;
@@ -38,7 +39,10 @@ int main(int argc, char* argv[]) {
     auto* playingSongModel = new model::PlayingSongModel(&engine);
     auto* playlistListModel = new model::PlaylistListModel(&engine);
     auto* artistListModel = new model::ArtistListModel(&engine);
+    auto* coverArtImageProvider = new provider::CoverArtImageProvider();
+    coverArtImageProvider->setClient(&client);
 
+    engine.addImageProvider("coverArt", coverArtImageProvider);
     engine.rootContext()->setContextProperty("songListModel", songListModel);
     engine.rootContext()->setContextProperty("queueListModel", queueListModel);
     engine.rootContext()->setContextProperty("playingSong", playingSongModel);

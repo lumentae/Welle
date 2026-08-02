@@ -31,11 +31,13 @@ qt_add_qml_module(Welle
             include/model/PlaylistListModel.h
             include/model/QueueListModel.h
             include/model/SongListModel.h
+            include/provider/CoverArtImageProvider.h
             src/model/ArtistListModel.cpp
             src/model/PlayingSongModel.cpp
             src/model/PlaylistListModel.cpp
             src/model/QueueListModel.cpp
             src/model/SongListModel.cpp
+            src/provider/CoverArtImageProvider.cpp
         RESOURCES
             external/MaterialSymbols/MaterialSymbols.ttf
 )

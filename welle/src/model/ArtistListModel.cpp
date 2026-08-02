@@ -21,10 +21,7 @@ namespace welle::model {
             case IdRole: return QString::fromStdString(entry.id);
             case IndexRole: return index.row() + 1;
             case NameRole: return QString::fromStdString(entry.name);
-            case CoverArtRole: {
-                const QString path = QDir::current().absoluteFilePath("cache/" + QString::fromStdString(entry.coverArt));
-                return QUrl::fromLocalFile(path).toString();
-            }
+            case CoverArtRole: return QString::fromStdString("image://coverArt/" + entry.coverArt);
             case AlbumCountRole: return static_cast<qlonglong>(entry.albumCount);
             default: return {};
         }

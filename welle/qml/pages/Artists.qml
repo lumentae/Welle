@@ -27,7 +27,7 @@ ListView {
         RowLayout {
             anchors.fill: parent
             width: parent.width
-            height: 56
+            height: 68
             spacing: 12
 
             Text {
@@ -40,8 +40,6 @@ ListView {
             Image {
                 source: coverArt
                 asynchronous: true
-                sourceSize.width: 56
-                sourceSize.height: 56
             }
             Text {
                 Layout.fillWidth: true

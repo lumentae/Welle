@@ -80,7 +80,7 @@ namespace welle::medialib::client {
         songsJson = songsJson["song"];
         const auto songs = songsJson.get<std::vector<types::Song>>();
         for (auto& song : songs) {
-            downloadCoverArt(song);
+            downloadCoverArt(song.coverArt);
         }
 
         Database::getInstance().insertSongs(songs);
@@ -104,7 +104,7 @@ namespace welle::medialib::client {
 
         auto artists = artistsJson.get<std::vector<types::Artist>>();
         for (auto& artist : artists) {
-            downloadCoverArt(artist);
+            downloadCoverArt(artist.coverArt);
         }
 
         std::thread insertThread([artists] {
@@ -129,24 +129,21 @@ namespace welle::medialib::client {
         return playlists;
     }
 
-    template <typename T>
-    void OpenSubsonicClient::downloadCoverArt(const T &song) {
+    std::filesystem::path OpenSubsonicClient::downloadCoverArt(const std::string& id) {
         // TODO: submit this to background thread
-        std::thread downloadThread([this, song] {
-            if (!std::filesystem::exists({"cache"}))
-                std::filesystem::create_directory({"cache"});
+        if (!std::filesystem::exists({"cache"}))
+            std::filesystem::create_directory({"cache"});
 
-            const auto cachePath = std::filesystem::path("cache/" + song.coverArt);
-            if (std::filesystem::exists(cachePath))
-                return;
+        const auto cachePath = std::filesystem::path("cache/" + id);
+        if (std::filesystem::exists(cachePath))
+            return cachePath;
 
-            const auto response = performRequest("getCoverArt.view",
-                {
-                    {"id", song.coverArt}
-                });
-            std::ofstream(cachePath, std::ios::binary) << response;
-        });
-        downloadThread.detach();
+        const auto response = performRequest("getCoverArt.view",
+            {
+                {"id", id}
+            });
+        std::ofstream(cachePath, std::ios::binary) << response;
+        return cachePath;
     }
 
     void OpenSubsonicClient::downloadSong(const types::Song &song) {
