@@ -32,6 +32,12 @@ ListView {
                 asynchronous: true
                 sourceSize.width: 56
                 sourceSize.height: 56
+                Layout.preferredWidth: 56
+                Layout.preferredHeight: 56
+                Layout.maximumWidth: 56
+                Layout.maximumHeight: 56
+                fillMode: Image.PreserveAspectCrop
+                clip: true
             }
             Column {
                 Layout.fillWidth: true
