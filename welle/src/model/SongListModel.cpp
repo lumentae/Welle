@@ -25,10 +25,7 @@ namespace welle::model {
             case AlbumRole: return QString::fromStdString(song.album);
             case AlbumIdRole: return QString::fromStdString(song.albumId);
             case DurationRole: return static_cast<qlonglong>(song.duration);
-            case CoverArtRole: {
-                const QString path = QDir::current().absoluteFilePath("cache/" + QString::fromStdString(song.coverArt));
-                return QUrl::fromLocalFile(path).toString();
-            }
+            case CoverArtRole: return QString::fromStdString("image://coverArt/" + song.coverArt);
             case PathRole: return QString::fromStdString(song.path);
             case SuffixRole: return QString::fromStdString(song.suffix);
             case PlayCountRole: return static_cast<qlonglong>(song.playCount);
