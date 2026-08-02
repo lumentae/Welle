@@ -55,6 +55,12 @@ ListView {
                 color: primaryTextColor
                 font.pixelSize: 15
             }
+            Text {
+                Layout.rightMargin: 16
+                text: albumCount + " albums"
+                color: primaryTextColor
+                font.pixelSize: 15
+            }
         }
 
         MouseArea {
