@@ -15,19 +15,46 @@ ListView {
 
     delegate: Rectangle {
         width: ListView.view.width
-        height: 100
-        color: "red"
+        height: 56
+        color: mouseArea.containsMouse ? primaryColorSelected : primaryColor
 
-        ColumnLayout {
+        Behavior on color {
+            ColorAnimation {
+                duration: 50
+            }
+        }
+
+        RowLayout {
             anchors.fill: parent
             width: parent.width
-            height: parent.height
+            height: 56
+            spacing: 12
 
-            Text { text: "Artist" }
-            Text { text: name ?? "" }
-            Text { text: id ?? "" }
-            Text { text: String(index ?? "") }
-            Text { text: String(albumCount ?? "") }
+            Text {
+                Layout.leftMargin: 16
+                text: index
+                color: secondaryTextColor
+                font.pixelSize: 13
+                Layout.preferredWidth: 24
+            }
+            Image {
+                source: coverArt
+                asynchronous: true
+                sourceSize.width: 56
+                sourceSize.height: 56
+            }
+            Text {
+                Layout.fillWidth: true
+                text: name
+                color: primaryTextColor
+                font.pixelSize: 15
+            }
+        }
+
+        MouseArea {
+            id: mouseArea
+            anchors.fill: parent
+            hoverEnabled: true
         }
     }
 

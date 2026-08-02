@@ -107,7 +107,7 @@ namespace welle::medialib::client {
             downloadCoverArt(artist);
         }
 
-        std::thread insertThread([this, artists] {
+        std::thread insertThread([artists] {
             Database::getInstance().insertArtists(artists);
         });
         insertThread.detach();
