@@ -38,6 +38,18 @@ ListView {
                 Layout.maximumHeight: 56
                 fillMode: Image.PreserveAspectCrop
                 clip: true
+                layer.enabled: true
+                layer.effect: OpacityMask {
+                    maskSource: mask
+                }
+            }
+
+            Rectangle {
+                id: mask
+                width: parent.width
+                height: width
+                radius: width/6
+                visible: false
             }
             Column {
                 Layout.fillWidth: true
