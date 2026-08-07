@@ -12,7 +12,7 @@ namespace welle::model {
         return m_Songs.size();
     }
 
-    QVariant QueueListModel::data(const QModelIndex &index, int role) const {
+    QVariant QueueListModel::data(const QModelIndex &index, const int role) const {
         if (!index.isValid() || index.row() >= m_Songs.size())
             return {};
 

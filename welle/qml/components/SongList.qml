@@ -1,11 +1,13 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import Qt5Compat.GraphicalEffects
 
 ListView {
     anchors.fill: parent
     model: songListModel
     clip: true
+    spacing: 8
 
     delegate: Rectangle {
         width: ListView.view.width
@@ -17,8 +19,9 @@ ListView {
         RowLayout {
             anchors.fill: parent
             width: parent.width
-            height: 56
-            spacing: 12
+            height: parent.height
+            Layout.topMargin: 3
+            Layout.bottomMargin: 3
 
             Text {
                 Layout.leftMargin: 16
@@ -51,6 +54,7 @@ ListView {
                 radius: width/6
                 visible: false
             }
+
             Column {
                 Layout.leftMargin: 8
                 Layout.fillWidth: true
