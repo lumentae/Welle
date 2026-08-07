@@ -112,8 +112,7 @@ namespace welle::model {
     }
 
     QUrl PlayingSongModel::coverArt() {
-        const QString path = QDir::current().absoluteFilePath("cache/" + QString::fromStdString(medialib::audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().coverArt));
-        return QUrl::fromLocalFile(path);
+        return QUrl::fromUserInput(QString::fromStdString("image://coverArt/" + medialib::audio::AudioPlayer::getInstance().getCurrentlyPlayingSong().coverArt));
     }
 
     QString PlayingSongModel::path() {
