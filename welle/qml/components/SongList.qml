@@ -52,6 +52,7 @@ ListView {
                 visible: false
             }
             Column {
+                Layout.leftMargin: 8
                 Layout.fillWidth: true
                 Text {
                     text: title
