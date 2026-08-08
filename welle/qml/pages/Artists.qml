@@ -1,12 +1,14 @@
 import QtQuick
 import QtQuick.Controls
 import QtQuick.Layouts
+import Qt5Compat.GraphicalEffects
 import "../components"
 
 ListView {
     anchors.fill: parent
     model: artistListModel
     clip: true
+    spacing: 8
 
     function fetchMoreIfNeeded() {
         if (!artistListModel.isLoading && contentY + height >= contentHeight - 200)
@@ -29,6 +31,8 @@ ListView {
             width: parent.width
             height: 68
             spacing: 12
+            Layout.topMargin: 3
+            Layout.bottomMargin: 3
 
             Text {
                 Layout.leftMargin: 16
@@ -37,6 +41,7 @@ ListView {
                 font.pixelSize: 13
                 Layout.preferredWidth: 24
             }
+
             Image {
                 source: coverArt
                 asynchronous: true
@@ -48,7 +53,19 @@ ListView {
                 Layout.maximumHeight: 56
                 fillMode: Image.PreserveAspectCrop
                 clip: true
+                layer.enabled: true
+                layer.effect: OpacityMask {
+                    maskSource: mask
+                }
             }
+            Rectangle {
+                id: mask
+                width: parent.width
+                height: width
+                radius: width/6
+                visible: false
+            }
+
             Text {
                 Layout.fillWidth: true
                 text: name
