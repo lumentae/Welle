@@ -18,7 +18,6 @@ qt_add_qml_module(Welle
         QML_FILES
             qml/Main.qml
             qml/components/BottomBar.qml
-            qml/components/SongList.qml
             qml/components/Sidebar.qml
             qml/components/SidebarEntry.qml
             qml/components/Content.qml
