@@ -10,7 +10,7 @@ jobs:
     uses: lumentae/actions/.github/workflows/build-cpp.yml@main
     with:
       python_packages: meson
-      system_packages: libsystemd-dev
+      system_packages: libsystemd-dev qt6-base-dev qt6-declarative-dev qt6-tools-dev
   release:
     permissions:
       contents: write
